@@ -1,11 +1,12 @@
 <!DOCTYPE html>
-<html lang="en"><head>
+<html lang="en">
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kinematics Solver - Equation 4</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&amp;family=Lato:wght@400;700&amp;display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Lato:wght@400;700&display=swap" rel="stylesheet">
     
     <!-- KaTeX CSS & JS CDN -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
@@ -14,18 +15,18 @@
     <style>
         * { box-sizing: border-box; }
 
-      body {
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-    background-color: #f8fafc;
-    color: #1e293b;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: flex-start;
-    min-height: 98vh;
-    margin: 0;
-    padding: 20px 20px 0 20px;
-}
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background-color: #f8fafc;
+            color: #1e293b;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            min-height: 98vh;
+            margin: 0;
+            padding: 20px;
+        }
 
         .slide-container {
             background-color: #ffffff;
@@ -33,13 +34,12 @@
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05), 0 1px 3px rgba(0, 0, 0, 0.03);
             display: flex;
             flex-direction: column;
-            height: 720px;
+            min-height: auto;
             overflow: hidden;
-            padding: 40px 60px;
+            padding: 30px 24px;
             position: relative;
-			max-width: 550px;
-			width: 100%;
-           
+            max-width: 550px;
+            width: 100%;
         }
 
         .top-bar {
@@ -47,7 +47,7 @@
             justify-content: space-between;
             align-items: center;
             width: 100%;
-            height: 50px;
+            gap: 12px;
         }
 
         .restart-btn {
@@ -57,10 +57,11 @@
             color: #475569;
             cursor: pointer;
             font-family: 'Lato', sans-serif;
-            font-size: 14px;
+            font-size: 13px;
             font-weight: 700;
-            padding: 10px 20px;
+            padding: 8px 14px;
             transition: all 0.2s ease;
+            white-space: nowrap;
         }
         .restart-btn:hover {
             background-color: #e2e8f0;
@@ -72,47 +73,47 @@
         h2.slide-title {
             color: #1e293b;
             font-family: 'Poppins', sans-serif;
-            font-size: 36px;
+            font-size: 22px;
             font-weight: 700;
             margin: 0;
             flex-grow: 1;
-            text-align: center;
-            transform: translateX(55px);
+            text-align: left;
         }
 
         .instructions {
             color: #64748b;
-            font-size: 20px;
+            font-size: 16px;
             font-weight: 400;
-            margin: 10px 0 15px 0;
+            margin: 15px 0 10px 0;
             text-align: center;
         }
 
         .equation-box {
             align-items: center;
             display: flex;
-            font-size: 64px;
-            height: 180px;
+            font-size: 42px;
+            min-height: 120px;
             justify-content: center;
             margin: 5px 0 20px 0;
             user-select: none;
             color: #0f172a;
+            flex-wrap: wrap;
         }
 
         .equation-box.scaled-step {
-            font-size: 48px;
+            font-size: 32px;
         }
 
-        .side { display: inline-flex; align-items: center; justify-content: center; padding: 0 8px; }
+        .side { display: inline-flex; align-items: center; justify-content: center; padding: 0 4px; }
 
         .clickable-block {
             align-items: center;
-            border-radius: 16px;
+            border-radius: 12px;
             border: 2px dashed #cbd5e1;
             background-color: #f8fafc;
             cursor: pointer;
             display: inline-flex;
-            padding: 10px 20px;
+            padding: 6px 12px;
             transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
@@ -131,8 +132,8 @@
         /* Ensure KaTeX font turns white when selected */
         .selected .katex { color: #ffffff !important; }
 
-        .sign { margin: 0 12px; font-weight: 600; font-family: 'Poppins', sans-serif; color: #64748b; }
-        .equals { margin: 0 18px; font-weight: 400; font-family: 'Poppins', sans-serif; color: #334155; }
+        .sign { margin: 0 6px; font-weight: 600; font-family: 'Poppins', sans-serif; color: #64748b; }
+        .equals { margin: 0 10px; font-weight: 400; font-family: 'Poppins', sans-serif; color: #334155; }
 
         .canceled-wrapper {
             align-items: center;
@@ -161,19 +162,19 @@
             flex-direction: column;
             justify-content: center;
             margin: 0 auto;
-            min-height: 240px;
-            padding: 24px 32px;
-            width: 900px;
+            min-height: 200px;
+            padding: 20px 16px;
+            width: 100%;
             position: relative;
             z-index: 10;
         }
 
         .action-label {
             color: #475569;
-            font-size: 13px;
+            font-size: 12px;
             font-weight: 700;
-            letter-spacing: 1.2px;
-            margin-bottom: 14px;
+            letter-spacing: 1px;
+            margin-bottom: 12px;
             text-align: center;
             text-transform: uppercase;
         }
@@ -185,10 +186,10 @@
 
         #feedback { 
             color: #ef4444; 
-            font-size: 18px; 
+            font-size: 15px; 
             font-weight: 700;
-            margin: 0 auto 10px auto;
-            min-height: 24px;
+            margin: 0 auto 8px auto;
+            min-height: 20px;
             text-align: center;
             width: 100%;
         }
@@ -197,14 +198,14 @@
             display: flex;
             flex-direction: column;
             gap: 12px;
-            width: 700px;
+            width: 100%;
             align-items: center;
         }
 
         .functional-row {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
-            gap: 16px;
+            gap: 12px;
             width: 100%;
         }
 
@@ -214,13 +215,13 @@
             background-color: #ffffff;
             border: 1px solid #e2e8f0;
             border-radius: 16px;
-            padding: 12px 16px;
+            padding: 10px 12px;
             gap: 8px;
             box-shadow: 0 2px 4px rgba(0,0,0,0.02);
         }
 
         .group-label {
-            font-size: 11px;
+            font-size: 10px;
             font-weight: 700;
             color: #94a3b8;
             text-transform: uppercase;
@@ -236,12 +237,13 @@
         }
 
         .full-width-row button {
-            width: 50%;
+            width: 100%;
         }
 
         .choices-container {
             display: flex;
-            gap: 16px;
+            flex-wrap: wrap;
+            gap: 10px;
             justify-content: center;
             width: 100%;
         }
@@ -255,12 +257,12 @@
             cursor: pointer;
             display: inline-flex;
             font-family: 'Poppins', sans-serif;
-            font-size: 16px;
+            font-size: 14px;
             font-weight: 600;
             justify-content: center;
-            padding: 10px 20px;
+            padding: 8px 14px;
             transition: all 0.2s ease;
-            min-height: 48px;
+            min-height: 44px;
             box-shadow: 0 1px 2px rgba(0,0,0,0.04);
         }
 
@@ -290,507 +292,514 @@
             75% { transform: translateX(6px); }
         }
     </style>
-</head><body><div class="slide-container">
-<div class="top-bar">
-<h2 class="slide-title">Kinematics Equation Solver</h2>
-<button class="restart-btn" onclick="resetToLanding()">Start Over</button></div>
-<p id="instruction-text" class="instructions">Select the variable you want to solve for.</p>
-<div id="equation-container" class="equation-box"></div>
-<div id="dynamic-panel" class="action-panel"></div>
-</div>
-<p><script>
-    let targetMode = null; 
-    let derivationState = 0; 
-    let activeSelectedId = null;
+</head>
+<body>
+    <div class="slide-container">
+        <div class="top-bar">
+            <h2 class="slide-title">Kinematics Solver</h2>
+            <button class="restart-btn" onclick="resetToLanding()">Start Over</button>
+        </div>
+        <p id="instruction-text" class="instructions">Select the variable you want to solve for.</p>
+        <div id="equation-container" class="equation-box"></div>
+        <div id="dynamic-panel" class="action-panel"></div>
+    </div>
 
-    // Standardized KaTeX render helpers (displayMode: false for tight inline flow)
-    const kRender = (tex) => katex.renderToString(tex, { throwOnError: false, displayMode: false });
-    const kRenderDisplay = (tex) => katex.renderToString(tex, { throwOnError: false, displayMode: true });
+    <script>
+        let targetMode = null; 
+        let derivationState = 0; 
+        let activeSelectedId = null;
 
-    const htmlD = () => kRender('d');
-    const htmlV2 = () => kRender('v_2');
-    const htmlT = () => kRender('t');
-    const htmlTSq = () => kRender('t^2');
-    const htmlA = () => kRender('a');
-    const html2Val = () => kRender('2');
-    const htmlMinus2Val = () => kRender('-2');
-    const htmlOpenParen = () => kRender('(');
-    const htmlCloseParen = () => kRender(')');
-    const htmlHalfATSq = () => kRender('\\frac{1}{2}at^2');
+        // Standardized KaTeX render helpers (displayMode: false for tight inline flow)
+        const kRender = (tex) => katex.renderToString(tex, { throwOnError: false, displayMode: false });
+        const kRenderDisplay = (tex) => katex.renderToString(tex, { throwOnError: false, displayMode: true });
 
-    const panel = document.getElementById('dynamic-panel');
-    const eqContainer = document.getElementById('equation-container');
-    const instructionText = document.getElementById('instruction-text');
+        const htmlD = () => kRender('d');
+        const htmlV2 = () => kRender('v_2');
+        const htmlT = () => kRender('t');
+        const htmlTSq = () => kRender('t^2');
+        const htmlA = () => kRender('a');
+        const html2Val = () => kRender('2');
+        const htmlMinus2Val = () => kRender('-2');
+        const htmlOpenParen = () => kRender('(');
+        const htmlCloseParen = () => kRender(')');
+        const htmlHalfATSq = () => kRender('\\frac{1}{2}at^2');
 
-    function render() {
-        eqContainer.classList.remove('scaled-step');
+        const panel = document.getElementById('dynamic-panel');
+        const eqContainer = document.getElementById('equation-container');
+        const instructionText = document.getElementById('instruction-text');
 
-        if (!targetMode) {
-            instructionText.innerHTML = "Select the variable you want to solve for.";
-            eqContainer.innerHTML = kRender('d = v_2 t - \\frac{1}{2}at^2');
+        function render() {
+            eqContainer.classList.remove('scaled-step');
+
+            if (!targetMode) {
+                instructionText.innerHTML = "Select the variable you want to solve for.";
+                eqContainer.innerHTML = kRender('d = v_2 t - \\frac{1}{2}at^2');
+                panel.innerHTML = `
+                    <div class="choices-container">
+                        <button onclick="setTargetMode('v2')">Solve for&nbsp;${htmlV2()}</button>
+                        <button onclick="setTargetMode('a')">Solve for&nbsp;${htmlA()}</button>
+                        <button onclick="setTargetMode('t')">Solve for&nbsp;${htmlT()}</button>
+                    </div>`;
+                return;
+            }
+
+            if (targetMode === 't') {
+                instructionText.innerHTML = `Isolate the variable ${htmlT()}.`;
+                if (derivationState === 'v2_check') renderV2Check();
+                else if (derivationState === 'quadratic_blocked') renderQuadraticBlocked();
+                else if (derivationState === 'visual_cancellation') renderVisualCancellation();
+                else renderTDerivation();
+            } else if (targetMode === 'v2') {
+                instructionText.innerHTML = `Isolate the variable ${htmlV2()}.`;
+                renderV2Derivation();
+            } else if (targetMode === 'a') {
+                instructionText.innerHTML = `Isolate the variable ${htmlA()}.`;
+                renderADerivation();
+            }
+        }
+
+        function renderV2Check() {
             panel.innerHTML = `
+                <div class="action-label">CHECK INITIAL CONDITIONS</div>
+                <p style="font-size: 16px; margin-bottom: 16px; text-align: center; color: #334155;">Is the initial velocity (${htmlV2()}) equal to 0?</p>
                 <div class="choices-container">
-                    <button onclick="setTargetMode('v2')">Solve for&nbsp;${htmlV2()}</button>
-                    <button onclick="setTargetMode('a')">Solve for&nbsp;${htmlA()}</button>
-                    <button onclick="setTargetMode('t')">Solve for&nbsp;${htmlT()}</button>
+                    <button onclick="handleQuadraticResponse(true)">Yes, ${htmlV2()} = 0</button>
+                    <button onclick="handleQuadraticResponse(false)">No, ${htmlV2()} is not 0</button>
                 </div>`;
-            return;
         }
 
-        if (targetMode === 't') {
-            instructionText.innerHTML = `Isolate the variable ${htmlT()}.`;
-            if (derivationState === 'v2_check') renderV2Check();
-            else if (derivationState === 'quadratic_blocked') renderQuadraticBlocked();
-            else if (derivationState === 'visual_cancellation') renderVisualCancellation();
-            else renderTDerivation();
-        } else if (targetMode === 'v2') {
-            instructionText.innerHTML = `Isolate the variable ${htmlV2()}.`;
-            renderV2Derivation();
-        } else if (targetMode === 'a') {
-            instructionText.innerHTML = `Isolate the variable ${htmlA()}.`;
-            renderADerivation();
+        function renderQuadraticBlocked() {
+            panel.innerHTML = `
+                <p style="font-size: 15px; line-height: 1.5; text-align: center; max-width: 100%; margin: 0 auto; color: #475569;">
+                    When ${htmlV2()} is not zero, this equation requires the Quadratic Formula to solve for time. Please select a different variable to isolate.
+                </p>
+                <button onclick="resetToLanding()" style="margin-top: 16px;">Go Back</button>`;
         }
-    }
 
-    function renderV2Check() {
-        panel.innerHTML = `
-            <div class="action-label">CHECK INITIAL CONDITIONS</div>
-            <p style="font-size: 20px; margin-bottom: 20px; text-align: center; color: #334155;">Is the initial velocity (${htmlV2()}) equal to 0?</p>
-            <div class="choices-container">
-                <button onclick="handleQuadraticResponse(true)">Yes, ${htmlV2()} = 0</button>
-                <button onclick="handleQuadraticResponse(false)">No, ${htmlV2()} is not 0</button>
-            </div>`;
-    }
-
-    function renderQuadraticBlocked() {
-        panel.innerHTML = `
-            <p style="font-size: 18px; line-height: 1.6; text-align: center; max-width: 600px; margin: 0 auto; color: #475569;">
-                When ${htmlV2()} is not zero, this equation requires the Quadratic Formula to solve for time. Please select a different variable to isolate.
-            </p>
-            <button onclick="resetToLanding()" style="margin-top: 20px;">Go Back</button>`;
-    }
-
-    function renderVisualCancellation() {
-        eqContainer.innerHTML = `
-            <div class="side">${htmlD()}</div><span class="equals">=</span>
-            <div class="side">
-                <span class="canceled-wrapper">${kRender('v_2 t')}</span>
-                <span class="sign" style="color: #cbd5e1;">-</span>
-                <span class="sign">-</span>${htmlHalfATSq()}
-            </div>`;
-        panel.innerHTML = `
-            <div class="action-label">SIMPLIFY THE EQUATION</div>
-            <button onclick="advanceDerivation(0)">Remove Canceled Term</button>`;
-    }
-
-    function renderTDerivation() {
-        if (derivationState === 0) {
+        function renderVisualCancellation() {
             eqContainer.innerHTML = `
-                <div class="side"><span class="clickable-block ${activeSelectedId === 'd_lhs' ? 'selected' : ''}" onclick="selectDerivationBlock('d_lhs')">${htmlD()}</span></div>
-                <span class="equals">=</span>
-                <div class="side"><span class="clickable-block ${['rhs_simple_halfatsq', 'denominator_constant_2', 'rhs_atsq_isolate_t_variant'].includes(activeSelectedId) ? 'selected' : ''}" onclick="selectDerivationBlock('rhs_simple_halfatsq')">${kRender('-\\frac{1}{2}at^2')}</span></div>`;
-        } else if (derivationState === 1) {
-            eqContainer.innerHTML = `
-                <div class="side"><span class="clickable-block ${activeSelectedId === 'lhs_minus_2d' ? 'selected' : ''}" onclick="selectDerivationBlock('lhs_minus_2d')">${kRender('-2d')}</span></div>
-                <span class="equals">=</span>
-                <div class="side"><span class="clickable-block ${['rhs_atsq_composite_mode_t', 'rhs_atsq_isolate'].includes(activeSelectedId) ? 'selected' : ''}" onclick="selectDerivationBlock('rhs_atsq_composite_mode_t')">${kRender('at^2')}</span></div>`;
-        } else if (derivationState === 2) {
-            eqContainer.innerHTML = `
+                <div class="side">${htmlD()}</div><span class="equals">=</span>
                 <div class="side">
-                    <span class="clickable-block ${activeSelectedId === 'lhs_frac_minus_2da' ? 'selected' : ''}" onclick="selectDerivationBlock('lhs_frac_minus_2da')">
-                        ${kRender('\\frac{-2d}{a}')}
-                    </span>
-                </div>
-                <span class="equals">=</span>
-                <div class="side"><span class="clickable-block ${activeSelectedId === 'rhs_tsq_isolate' ? 'selected' : ''}" onclick="selectDerivationBlock('rhs_tsq_isolate')">${htmlTSq()}</span></div>`;
-        } else if (derivationState === 3) {
-            eqContainer.innerHTML = `
-                <div class="side">${kRender('\\sqrt{\\frac{-2d}{a}}')}</div>
-                <span class="equals">=</span>
-                <div class="side">${htmlT()}</div>`;
-        }
-        renderDerivationToolkit();
-    }
-
-    function renderV2Derivation() {
-        if (derivationState === 0) {
-            eqContainer.innerHTML = `
-                <div class="side"><span class="clickable-block ${activeSelectedId === 'd_lhs' ? 'selected' : ''}" onclick="selectDerivationBlock('d_lhs')">${htmlD()}</span></div>
-                <span class="equals">=</span>
-                <div class="side">
-                    <span class="clickable-block ${activeSelectedId === 'remove_v2t_target' ? 'selected' : ''}" onclick="selectDerivationBlock('remove_v2t_target')">${kRender('v_2 t')}</span>
-                    <span class="sign">-</span>
-                    <span class="clickable-block ${activeSelectedId === 'remove_half_at_sq_target' ? 'selected' : ''}" onclick="selectDerivationBlock('remove_half_at_sq_target')">${htmlHalfATSq()}</span>
+                    <span class="canceled-wrapper">${kRender('v_2 t')}</span>
+                    <span class="sign" style="color: #cbd5e1;">-</span>
+                    <span class="sign">-</span>${htmlHalfATSq()}
                 </div>`;
-        } else if (derivationState === 1) {
-            eqContainer.innerHTML = `
-                <div class="side"><span class="clickable-block ${activeSelectedId === 'lhs_d_plus_atsq' ? 'selected' : ''}" onclick="selectDerivationBlock('lhs_d_plus_atsq')">${kRender('d + \\frac{1}{2}at^2')}</span></div>
-                <span class="equals">=</span>
-                <div class="side"><span class="clickable-block ${['rhs_v2t_composite', 'rhs_v2t'].includes(activeSelectedId) ? 'selected' : ''}" onclick="selectDerivationBlock('rhs_v2t_composite')">${kRender('v_2 t')}</span></div>`;
-        } else if (derivationState === 2) {
-            eqContainer.classList.add('scaled-step');
-            eqContainer.innerHTML = `
-                <div class="side">${kRender('\\frac{d + \\frac{1}{2}at^2}{t}')}</div>
-                <span class="equals">=</span>
-                <div class="side">${htmlV2()}</div>`;
+            panel.innerHTML = `
+                <div class="action-label">SIMPLIFY THE EQUATION</div>
+                <button onclick="advanceDerivation(0)">Remove Canceled Term</button>`;
         }
-        renderDerivationToolkit();
-    }
 
-    function renderADerivation() {
-        if (derivationState === 0) {
-            eqContainer.innerHTML = `
-                <div class="side"><span class="clickable-block ${activeSelectedId === 'd_lhs' ? 'selected' : ''}" onclick="selectDerivationBlock('d_lhs')">${htmlD()}</span></div>
-                <span class="equals">=</span>
-                <div class="side">
-                    <span class="clickable-block ${activeSelectedId === 'remove_v2t_target' ? 'selected' : ''}" onclick="selectDerivationBlock('remove_v2t_target')">${kRender('v_2 t')}</span>
-                    <span class="sign">-</span>
-                    <span class="clickable-block ${activeSelectedId === 'remove_half_at_sq_target' ? 'selected' : ''}" onclick="selectDerivationBlock('remove_half_at_sq_target')">${htmlHalfATSq()}</span>
-                </div>`;
-        } else if (derivationState === 1) {
-            eqContainer.innerHTML = `
-                <div class="side"><span class="clickable-block ${activeSelectedId === 'lhs_d_minus_v2t' ? 'selected' : ''}" onclick="selectDerivationBlock('lhs_d_minus_v2t')">${kRender('d - v_2 t')}</span></div>
-                <span class="equals">=</span>
-                <div class="side"><span class="clickable-block ${['rhs_simple_halfatsq_mode_a', 'denominator_constant_2', 'rhs_at_sq_isolate_variant'].includes(activeSelectedId) ? 'selected' : ''}" onclick="selectDerivationBlock('rhs_simple_halfatsq_mode_a')">${kRender('-\\frac{1}{2}at^2')}</span></div>`;
-        } else if (derivationState === 2) {
-            eqContainer.innerHTML = `
-                <div class="side"><span class="clickable-block ${activeSelectedId === 'lhs_mult_2v2t_d' ? 'selected' : ''}" onclick="selectDerivationBlock('lhs_mult_2v2t_d')">${kRender('-2(d - v_2 t)')}</span></div>
-                <span class="equals">=</span>
-                <div class="side"><span class="clickable-block ${['rhs_at_sq_composite', 'rhs_at_sq'].includes(activeSelectedId) ? 'selected' : ''}" onclick="selectDerivationBlock('rhs_at_sq_composite')">${kRender('at^2')}</span></div>`;
-        } else if (derivationState === 3) {
-            eqContainer.classList.add('scaled-step');
-            eqContainer.innerHTML = `
-                <div class="side">${kRender('\\frac{-2(d - v_2 t)}{t^2}')}</div>
-                <span class="equals">=</span>
-                <div class="side">${htmlA()}</div>`;
-        }
-        renderDerivationToolkit();
-    }
-
-	function getSelectedExpressionKaTeX(id) {
-	        switch (id) {
-	            case 'remove_half_at_sq_target':
-	                return kRender('\\frac{1}{2}at^2');
-	            case 'remove_v2t_target':
-	                return kRender('v_2 t');
-	            case 'denominator_constant_2':
-	                return kRender('-2');
-	            case 'rhs_atsq_isolate':
-	            case 'rhs_at_sq':
-	                return kRender('a');
-	            case 'rhs_tsq_isolate':
-	                return kRender('t^2');
-	            case 'rhs_v2t':
-	                return kRender('t');
-	            default:
-	                return '';
-	        }
-	    }
-
-	    function renderDerivationToolkit() {
-	        const derivationFinalized = (targetMode === 't' && derivationState === 3) || 
-	                                    (targetMode === 'v2' && derivationState === 2) || 
-	                                    (targetMode === 'a' && derivationState === 3);
-        
-	        if (derivationFinalized) {
-	            let isolatedVarHtml = targetMode === 'v2' ? htmlV2() : (targetMode === 'a' ? htmlA() : htmlT());
-	            panel.innerHTML = `
-	                <div class="action-label" style="color: #16a34a;">EQUATION SOLVED!</div>
-	                <div style="font-size: 24px; color: #16a34a; font-weight: bold; text-align: center;">
-	                    Success! You've isolated ${isolatedVarHtml}.
-	                </div>`;
-	            return;
-	        }
-
-	        let feedbackHtml = `<div id="feedback"></div>`;
-
-	        if (!activeSelectedId) {
-	            panel.innerHTML = `
-	                ${feedbackHtml}
-	                <div class="action-label">CLICK ON A SECTION OF THE EQUATION ABOVE TO OPERATE ON IT</div>
-	                <div class="functional-toolkit">
-	                    <div class="functional-row">
-	                        <div class="functional-group">
-	                            <span class="group-label">Terms & Expressions</span>
-	                            <button onclick="executeDerivationAction('add')">Add</button>
-	                            <button onclick="executeDerivationAction('subtract')">Subtract</button>
-	                        </div>
-	                        <div class="functional-group">
-	                            <span class="group-label">Factors & Coefficients</span>
-	                            <button onclick="executeDerivationAction('multiply')">Multiply</button>
-	                            <button onclick="executeDerivationAction('divide')">Divide</button>
-	                        </div>
-	                    </div>
-	                    <div class="full-width-row">
-	                        <button onclick="executeDerivationAction('root')">Take Square Root</button>
-	                    </div>
-	                </div>`;
-	            return;
-	        }
-        
-	        if (activeSelectedId === 'rhs_simple_halfatsq') {
-	            panel.innerHTML = `
-	                ${feedbackHtml}
-	                <div class="action-label">WHICH PART DO YOU WANT TO CLEAR TO ISOLATE ${htmlT()}?</div>
-	                <div class="choices-container">
-	                    <button onclick="handleSubComponentSelection('2')">${htmlMinus2Val()}</button>
-	                    <button onclick="handleSubComponentSelection('a')">${htmlA()}</button>
-	                    <button onclick="handleSubComponentSelection('t2')">${htmlTSq()}</button>
-	                </div>`;
-	            return;
-	        }
-
-	        if (activeSelectedId === 'rhs_simple_halfatsq_mode_a') {
-	            panel.innerHTML = `
-	                ${feedbackHtml}
-	                <div class="action-label">WHICH PART DO YOU WANT TO CLEAR TO ISOLATE ${htmlA()}?</div>
-	                <div class="choices-container">
-	                    <button onclick="handleSubComponentSelection('2')">${htmlMinus2Val()}</button>
-	                    <button onclick="handleSubComponentSelection('a')">${htmlA()}</button>
-	                    <button onclick="handleSubComponentSelection('t2')">${htmlTSq()}</button>
-	                </div>`;
-	            return;
-	        }
-
-	        if (activeSelectedId === 'rhs_atsq_composite_mode_t') {
-	            panel.innerHTML = `
-	                ${feedbackHtml}
-	                <div class="action-label">WHICH PART DO YOU WANT TO CLEAR TO ISOLATE ${htmlT()}?</div>
-	                <div class="choices-container">
-	                    <button onclick="handleSubComponentSelection('a')">${htmlA()}</button>
-	                    <button onclick="handleSubComponentSelection('t2')">${htmlTSq()}</button>
-	                </div>`;
-	            return;
-	        }
-
-	        if (activeSelectedId === 'rhs_at_sq_composite') {
-	            panel.innerHTML = `
-	                ${feedbackHtml}
-	                <div class="action-label">WHICH PART DO YOU WANT TO CLEAR TO ISOLATE ${htmlA()}?</div>
-	                <div class="choices-container">
-	                    <button onclick="handleSubComponentSelection('a')">${htmlA()}</button>
-	                    <button onclick="handleSubComponentSelection('t2')">${htmlTSq()}</button>
-	                </div>`;
-	            return;
-	        }
-
-	        if (activeSelectedId === 'rhs_v2t_composite') {
-	            panel.innerHTML = `
-	                ${feedbackHtml}
-	                <div class="action-label">WHICH PART DO YOU WANT TO CLEAR TO ISOLATE ${htmlV2()}?</div>
-	                <div class="choices-container">
-	                    <button onclick="handleSubComponentSelection('v2')">${htmlV2()}</button>
-	                    <button onclick="handleSubComponentSelection('t')">${htmlT()}</button>
-	                </div>`;
-	            return;
-	        }
-
-	        // Dynamically get expression to render in the header label
-	        const targetExpr = getSelectedExpressionKaTeX(activeSelectedId);
-	        const headerText = targetExpr ? `CHOOSE AN OPERATION TO APPLY TO ${targetExpr}` : `CHOOSE AN OPERATION`;
-
-	        panel.innerHTML = `
-	            ${feedbackHtml}
-	            <div class="action-label">${headerText}</div>
-	            <div class="functional-toolkit">
-	                <div class="functional-row">
-	                    <div class="functional-group">
-	                        <span class="group-label">Terms & Expressions</span>
-	                        <button onclick="executeDerivationAction('add')">Add</button>
-	                        <button onclick="executeDerivationAction('subtract')">Subtract</button>
-	                    </div>
-	                    <div class="functional-group">
-	                        <span class="group-label">Factors & Coefficients</span>
-	                        <button onclick="executeDerivationAction('multiply')">Multiply</button>
-	                        <button onclick="executeDerivationAction('divide')">Divide</button>
-	                    </div>
-	                </div>
-	                <div class="full-width-row">
-	                    <button onclick="executeDerivationAction('root')">Take Square Root</button>
-	                </div>
-	            </div>`;
-	    }
-    function setTargetMode(mode) {
-        targetMode = mode;
-        derivationState = (mode === 't') ? 'v2_check' : 0;
-        clearDerivationSelection();
-        render();
-    }
-
-    function handleQuadraticResponse(v2IsZero) {
-        derivationState = v2IsZero ? 'visual_cancellation' : 'quadratic_blocked';
-        render();
-    }
-
-    function selectDerivationBlock(blockId) {
-        clearFeedbackNode();
-        if (blockId === 'd_lhs') {
-            showPedagogicalError('dont_move_this');
-            activeSelectedId = null;
-        } else {
-            activeSelectedId = blockId;
-        }
-        render();
-    }
-
-    function handleSubComponentSelection(componentPressed) {
-        clearFeedbackNode();
-
-        if (targetMode === 't') {
+        function renderTDerivation() {
             if (derivationState === 0) {
-                if (componentPressed === '2') {
-                    activeSelectedId = 'denominator_constant_2';
-                } else if (componentPressed === 'a' || componentPressed === 't2') {
-                    showPedagogicalError('denominator_first');
-                    return; 
-                }
+                eqContainer.innerHTML = `
+                    <div class="side"><span class="clickable-block ${activeSelectedId === 'd_lhs' ? 'selected' : ''}" onclick="selectDerivationBlock('d_lhs')">${htmlD()}</span></div>
+                    <span class="equals">=</span>
+                    <div class="side"><span class="clickable-block ${['rhs_simple_halfatsq', 'denominator_constant_2', 'rhs_atsq_isolate_t_variant'].includes(activeSelectedId) ? 'selected' : ''}" onclick="selectDerivationBlock('rhs_simple_halfatsq')">${kRender('-\\frac{1}{2}at^2')}</span></div>`;
             } else if (derivationState === 1) {
-                if (componentPressed === 'a') {
-                    activeSelectedId = 'rhs_atsq_isolate';
-                } else if (componentPressed === 't2') {
-                    showPedagogicalError('dont_clear_target_t');
-                    return;
-                }
-            }
-        }
-        else if (targetMode === 'a') {
-            if (derivationState === 1) {
-                if (componentPressed === '2') {
-                    activeSelectedId = 'denominator_constant_2';
-                } else if (componentPressed === 'a') {
-                    showPedagogicalError('dont_move_a');
-                    return;
-                } else if (componentPressed === 't2') {
-                    showPedagogicalError('denominator_first');
-                    return;
-                }
+                eqContainer.innerHTML = `
+                    <div class="side"><span class="clickable-block ${activeSelectedId === 'lhs_minus_2d' ? 'selected' : ''}" onclick="selectDerivationBlock('lhs_minus_2d')">${kRender('-2d')}</span></div>
+                    <span class="equals">=</span>
+                    <div class="side"><span class="clickable-block ${['rhs_atsq_composite_mode_t', 'rhs_atsq_isolate'].includes(activeSelectedId) ? 'selected' : ''}" onclick="selectDerivationBlock('rhs_atsq_composite_mode_t')">${kRender('at^2')}</span></div>`;
             } else if (derivationState === 2) {
-                if (componentPressed === 't2') {
-                    activeSelectedId = 'rhs_at_sq';
-                } else if (componentPressed === 'a') {
-                    showPedagogicalError('dont_clear_target_a');
-                    return;
+                eqContainer.innerHTML = `
+                    <div class="side">
+                        <span class="clickable-block ${activeSelectedId === 'lhs_frac_minus_2da' ? 'selected' : ''}" onclick="selectDerivationBlock('lhs_frac_minus_2da')">
+                            ${kRender('\\frac{-2d}{a}')}
+                        </span>
+                    </div>
+                    <span class="equals">=</span>
+                    <div class="side"><span class="clickable-block ${activeSelectedId === 'rhs_tsq_isolate' ? 'selected' : ''}" onclick="selectDerivationBlock('rhs_tsq_isolate')">${htmlTSq()}</span></div>`;
+            } else if (derivationState === 3) {
+                eqContainer.innerHTML = `
+                    <div class="side">${kRender('\\sqrt{\\frac{-2d}{a}}')}</div>
+                    <span class="equals">=</span>
+                    <div class="side">${htmlT()}</div>`;
+            }
+            renderDerivationToolkit();
+        }
+
+        function renderV2Derivation() {
+            if (derivationState === 0) {
+                eqContainer.innerHTML = `
+                    <div class="side"><span class="clickable-block ${activeSelectedId === 'd_lhs' ? 'selected' : ''}" onclick="selectDerivationBlock('d_lhs')">${htmlD()}</span></div>
+                    <span class="equals">=</span>
+                    <div class="side">
+                        <span class="clickable-block ${activeSelectedId === 'remove_v2t_target' ? 'selected' : ''}" onclick="selectDerivationBlock('remove_v2t_target')">${kRender('v_2 t')}</span>
+                        <span class="sign">-</span>
+                        <span class="clickable-block ${activeSelectedId === 'remove_half_at_sq_target' ? 'selected' : ''}" onclick="selectDerivationBlock('remove_half_at_sq_target')">${htmlHalfATSq()}</span>
+                    </div>`;
+            } else if (derivationState === 1) {
+                eqContainer.innerHTML = `
+                    <div class="side"><span class="clickable-block ${activeSelectedId === 'lhs_d_plus_atsq' ? 'selected' : ''}" onclick="selectDerivationBlock('lhs_d_plus_atsq')">${kRender('d + \\frac{1}{2}at^2')}</span></div>
+                    <span class="equals">=</span>
+                    <div class="side"><span class="clickable-block ${['rhs_v2t_composite', 'rhs_v2t'].includes(activeSelectedId) ? 'selected' : ''}" onclick="selectDerivationBlock('rhs_v2t_composite')">${kRender('v_2 t')}</span></div>`;
+            } else if (derivationState === 2) {
+                eqContainer.classList.add('scaled-step');
+                eqContainer.innerHTML = `
+                    <div class="side">${kRender('\\frac{d + \\frac{1}{2}at^2}{t}')}</div>
+                    <span class="equals">=</span>
+                    <div class="side">${htmlV2()}</div>`;
+            }
+            renderDerivationToolkit();
+        }
+
+        function renderADerivation() {
+            if (derivationState === 0) {
+                eqContainer.innerHTML = `
+                    <div class="side"><span class="clickable-block ${activeSelectedId === 'd_lhs' ? 'selected' : ''}" onclick="selectDerivationBlock('d_lhs')">${htmlD()}</span></div>
+                    <span class="equals">=</span>
+                    <div class="side">
+                        <span class="clickable-block ${activeSelectedId === 'remove_v2t_target' ? 'selected' : ''}" onclick="selectDerivationBlock('remove_v2t_target')">${kRender('v_2 t')}</span>
+                        <span class="sign">-</span>
+                        <span class="clickable-block ${activeSelectedId === 'remove_half_at_sq_target' ? 'selected' : ''}" onclick="selectDerivationBlock('remove_half_at_sq_target')">${htmlHalfATSq()}</span>
+                    </div>`;
+            } else if (derivationState === 1) {
+                eqContainer.innerHTML = `
+                    <div class="side"><span class="clickable-block ${activeSelectedId === 'lhs_d_minus_v2t' ? 'selected' : ''}" onclick="selectDerivationBlock('lhs_d_minus_v2t')">${kRender('d - v_2 t')}</span></div>
+                    <span class="equals">=</span>
+                    <div class="side"><span class="clickable-block ${['rhs_simple_halfatsq_mode_a', 'denominator_constant_2', 'rhs_at_sq_isolate_variant'].includes(activeSelectedId) ? 'selected' : ''}" onclick="selectDerivationBlock('rhs_simple_halfatsq_mode_a')">${kRender('-\\frac{1}{2}at^2')}</span></div>`;
+            } else if (derivationState === 2) {
+                eqContainer.innerHTML = `
+                    <div class="side"><span class="clickable-block ${activeSelectedId === 'lhs_mult_2v2t_d' ? 'selected' : ''}" onclick="selectDerivationBlock('lhs_mult_2v2t_d')">${kRender('-2(d - v_2 t)')}</span></div>
+                    <span class="equals">=</span>
+                    <div class="side"><span class="clickable-block ${['rhs_at_sq_composite', 'rhs_at_sq'].includes(activeSelectedId) ? 'selected' : ''}" onclick="selectDerivationBlock('rhs_at_sq_composite')">${kRender('at^2')}</span></div>`;
+            } else if (derivationState === 3) {
+                eqContainer.classList.add('scaled-step');
+                eqContainer.innerHTML = `
+                    <div class="side">${kRender('\\frac{-2(d - v_2 t)}{t^2}')}</div>
+                    <span class="equals">=</span>
+                    <div class="side">${htmlA()}</div>`;
+            }
+            renderDerivationToolkit();
+        }
+
+        function getSelectedExpressionKaTeX(id) {
+            switch (id) {
+                case 'remove_half_at_sq_target':
+                    return kRender('\\frac{1}{2}at^2');
+                case 'remove_v2t_target':
+                    return kRender('v_2 t');
+                case 'denominator_constant_2':
+                    return kRender('-2');
+                case 'rhs_atsq_isolate':
+                case 'rhs_at_sq':
+                    return kRender('a');
+                case 'rhs_tsq_isolate':
+                    return kRender('t^2');
+                case 'rhs_v2t':
+                    return kRender('t');
+                default:
+                    return '';
+            }
+        }
+
+        function renderDerivationToolkit() {
+            const derivationFinalized = (targetMode === 't' && derivationState === 3) || 
+                                        (targetMode === 'v2' && derivationState === 2) || 
+                                        (targetMode === 'a' && derivationState === 3);
+            
+            if (derivationFinalized) {
+                let isolatedVarHtml = targetMode === 'v2' ? htmlV2() : (targetMode === 'a' ? htmlA() : htmlT());
+                panel.innerHTML = `
+                    <div class="action-label" style="color: #16a34a;">EQUATION SOLVED!</div>
+                    <div style="font-size: 20px; color: #16a34a; font-weight: bold; text-align: center;">
+                        Success! You've isolated ${isolatedVarHtml}.
+                    </div>`;
+                return;
+            }
+
+            let feedbackHtml = `<div id="feedback"></div>`;
+
+            if (!activeSelectedId) {
+                panel.innerHTML = `
+                    ${feedbackHtml}
+                    <div class="action-label">CLICK ON A SECTION OF THE EQUATION ABOVE TO OPERATE ON IT</div>
+                    <div class="functional-toolkit">
+                        <div class="functional-row">
+                            <div class="functional-group">
+                                <span class="group-label">Terms & Expressions</span>
+                                <button onclick="executeDerivationAction('add')">Add</button>
+                                <button onclick="executeDerivationAction('subtract')">Subtract</button>
+                            </div>
+                            <div class="functional-group">
+                                <span class="group-label">Factors & Coefficients</span>
+                                <button onclick="executeDerivationAction('multiply')">Multiply</button>
+                                <button onclick="executeDerivationAction('divide')">Divide</button>
+                            </div>
+                        </div>
+                        <div class="full-width-row">
+                            <button onclick="executeDerivationAction('root')">Take Square Root</button>
+                        </div>
+                    </div>`;
+                return;
+            }
+            
+            if (activeSelectedId === 'rhs_simple_halfatsq') {
+                panel.innerHTML = `
+                    ${feedbackHtml}
+                    <div class="action-label">WHICH PART DO YOU WANT TO CLEAR TO ISOLATE ${htmlT()}?</div>
+                    <div class="choices-container">
+                        <button onclick="handleSubComponentSelection('2')">${htmlMinus2Val()}</button>
+                        <button onclick="handleSubComponentSelection('a')">${htmlA()}</button>
+                        <button onclick="handleSubComponentSelection('t2')">${htmlTSq()}</button>
+                    </div>`;
+                return;
+            }
+
+            if (activeSelectedId === 'rhs_simple_halfatsq_mode_a') {
+                panel.innerHTML = `
+                    ${feedbackHtml}
+                    <div class="action-label">WHICH PART DO YOU WANT TO CLEAR TO ISOLATE ${htmlA()}?</div>
+                    <div class="choices-container">
+                        <button onclick="handleSubComponentSelection('2')">${htmlMinus2Val()}</button>
+                        <button onclick="handleSubComponentSelection('a')">${htmlA()}</button>
+                        <button onclick="handleSubComponentSelection('t2')">${htmlTSq()}</button>
+                    </div>`;
+                return;
+            }
+
+            if (activeSelectedId === 'rhs_atsq_composite_mode_t') {
+                panel.innerHTML = `
+                    ${feedbackHtml}
+                    <div class="action-label">WHICH PART DO YOU WANT TO CLEAR TO ISOLATE ${htmlT()}?</div>
+                    <div class="choices-container">
+                        <button onclick="handleSubComponentSelection('a')">${htmlA()}</button>
+                        <button onclick="handleSubComponentSelection('t2')">${htmlTSq()}</button>
+                    </div>`;
+                return;
+            }
+
+            if (activeSelectedId === 'rhs_at_sq_composite') {
+                panel.innerHTML = `
+                    ${feedbackHtml}
+                    <div class="action-label">WHICH PART DO YOU WANT TO CLEAR TO ISOLATE ${htmlA()}?</div>
+                    <div class="choices-container">
+                        <button onclick="handleSubComponentSelection('a')">${htmlA()}</button>
+                        <button onclick="handleSubComponentSelection('t2')">${htmlTSq()}</button>
+                    </div>`;
+                return;
+            }
+
+            if (activeSelectedId === 'rhs_v2t_composite') {
+                panel.innerHTML = `
+                    ${feedbackHtml}
+                    <div class="action-label">WHICH PART DO YOU WANT TO CLEAR TO ISOLATE ${htmlV2()}?</div>
+                    <div class="choices-container">
+                        <button onclick="handleSubComponentSelection('v2')">${htmlV2()}</button>
+                        <button onclick="handleSubComponentSelection('t')">${htmlT()}</button>
+                    </div>`;
+                return;
+            }
+
+            // Dynamically get expression to render in the header label
+            const targetExpr = getSelectedExpressionKaTeX(activeSelectedId);
+            const headerText = targetExpr ? `CHOOSE AN OPERATION TO APPLY TO ${targetExpr}` : `CHOOSE AN OPERATION`;
+
+            panel.innerHTML = `
+                ${feedbackHtml}
+                <div class="action-label">${headerText}</div>
+                <div class="functional-toolkit">
+                    <div class="functional-row">
+                        <div class="functional-group">
+                            <span class="group-label">Terms & Expressions</span>
+                            <button onclick="executeDerivationAction('add')">Add</button>
+                            <button onclick="executeDerivationAction('subtract')">Subtract</button>
+                        </div>
+                        <div class="functional-group">
+                            <span class="group-label">Factors & Coefficients</span>
+                            <button onclick="executeDerivationAction('multiply')">Multiply</button>
+                            <button onclick="executeDerivationAction('divide')">Divide</button>
+                        </div>
+                    </div>
+                    <div class="full-width-row">
+                        <button onclick="executeDerivationAction('root')">Take Square Root</button>
+                    </div>
+                </div>`;
+        }
+
+        function setTargetMode(mode) {
+            targetMode = mode;
+            derivationState = (mode === 't') ? 'v2_check' : 0;
+            clearDerivationSelection();
+            render();
+        }
+
+        function handleQuadraticResponse(v2IsZero) {
+            derivationState = v2IsZero ? 'visual_cancellation' : 'quadratic_blocked';
+            render();
+        }
+
+        function selectDerivationBlock(blockId) {
+            clearFeedbackNode();
+            if (blockId === 'd_lhs') {
+                showPedagogicalError('dont_move_this');
+                activeSelectedId = null;
+            } else {
+                activeSelectedId = blockId;
+            }
+            render();
+        }
+
+        function handleSubComponentSelection(componentPressed) {
+            clearFeedbackNode();
+
+            if (targetMode === 't') {
+                if (derivationState === 0) {
+                    if (componentPressed === '2') {
+                        activeSelectedId = 'denominator_constant_2';
+                    } else if (componentPressed === 'a' || componentPressed === 't2') {
+                        showPedagogicalError('denominator_first');
+                        return; 
+                    }
+                } else if (derivationState === 1) {
+                    if (componentPressed === 'a') {
+                        activeSelectedId = 'rhs_atsq_isolate';
+                    } else if (componentPressed === 't2') {
+                        showPedagogicalError('dont_clear_target_t');
+                        return;
+                    }
+                }
+            }
+            else if (targetMode === 'a') {
+                if (derivationState === 1) {
+                    if (componentPressed === '2') {
+                        activeSelectedId = 'denominator_constant_2';
+                    } else if (componentPressed === 'a') {
+                        showPedagogicalError('dont_move_a');
+                        return;
+                    } else if (componentPressed === 't2') {
+                        showPedagogicalError('denominator_first');
+                        return;
+                    }
+                } else if (derivationState === 2) {
+                    if (componentPressed === 't2') {
+                        activeSelectedId = 'rhs_at_sq';
+                    } else if (componentPressed === 'a') {
+                        showPedagogicalError('dont_clear_target_a');
+                        return;
+                    }
+                }
+            }
+            else if (targetMode === 'v2') {
+                if (derivationState === 1) {
+                    if (componentPressed === 't') {
+                        activeSelectedId = 'rhs_v2t';
+                    } else if (componentPressed === 'v2') {
+                        showPedagogicalError('dont_clear_target_v2');
+                        return;
+                    }
+                }
+            }
+            render();
+        }
+
+        function executeDerivationAction(op) {
+            clearFeedbackNode();
+
+            if (targetMode === 't') {
+                if (activeSelectedId === 'denominator_constant_2') {
+                    if (op === 'multiply') advanceDerivation(1);
+                    else showPedagogicalError('invalid_op');
+                } else if (activeSelectedId === 'rhs_atsq_isolate') {
+                    if (op === 'divide') advanceDerivation(2);
+                    else showPedagogicalError('invalid_op');
+                } else if (activeSelectedId === 'rhs_tsq_isolate') {
+                    if (op === 'root') advanceDerivation(3);
+                    else showPedagogicalError('invalid_op');
+                } else {
+                    showPedagogicalError('invalid_op');
+                }
+            }
+            else if (targetMode === 'v2') {
+                if (activeSelectedId === 'remove_half_at_sq_target') {
+                    if (op === 'add') advanceDerivation(1);
+                    else showPedagogicalError('wrong_operation_add');
+                } else if (activeSelectedId === 'remove_v2t_target') {
+                    showPedagogicalError('dont_move_v2t');
+                } else if (activeSelectedId === 'rhs_v2t') {
+                    if (op === 'divide') advanceDerivation(2);
+                    else showPedagogicalError('invalid_op');
+                } else {
+                    showPedagogicalError('invalid_op');
+                }
+            }
+            else if (targetMode === 'a') {
+                if (activeSelectedId === 'remove_v2t_target') {
+                    if (op === 'subtract') advanceDerivation(1);
+                    else showPedagogicalError('wrong_operation_sub');
+                } else if (activeSelectedId === 'remove_half_at_sq_target') {
+                    showPedagogicalError('dont_move_half_at_sq');
+                } else if (activeSelectedId === 'denominator_constant_2') {
+                    if (op === 'multiply') advanceDerivation(2);
+                    else showPedagogicalError('invalid_op');
+                } else if (activeSelectedId === 'rhs_at_sq') {
+                    if (op === 'divide') advanceDerivation(3);
+                    else showPedagogicalError('invalid_op');
+                } else {
+                    showPedagogicalError('invalid_op');
                 }
             }
         }
-        else if (targetMode === 'v2') {
-            if (derivationState === 1) {
-                if (componentPressed === 't') {
-                    activeSelectedId = 'rhs_v2t';
-                } else if (componentPressed === 'v2') {
-                    showPedagogicalError('dont_clear_target_v2');
-                    return;
-                }
+
+        function advanceDerivation(nextState) {
+            derivationState = nextState;
+            activeSelectedId = null;
+            render();
+        }
+
+        function clearDerivationSelection() {
+            activeSelectedId = null;
+        }
+
+        function resetToLanding() {
+            targetMode = null;
+            derivationState = 0;
+            clearDerivationSelection();
+            render();
+        }
+
+        function clearFeedbackNode() {
+            const feedbackEl = document.getElementById('feedback');
+            if (feedbackEl) {
+                feedbackEl.innerHTML = "";
+                feedbackEl.className = "";
             }
         }
+
+        function showPedagogicalError(errorType) {
+            const feedbackEl = document.getElementById('feedback');
+            if (!feedbackEl) return;
+
+            if (errorType === 'denominator_first') {
+                feedbackEl.innerHTML = "Clear the denominator first.";
+            } else if (errorType === 'dont_move_a') {
+                feedbackEl.innerHTML = "We don't want to move a.";
+            } else if (errorType === 'dont_move_this') {
+                feedbackEl.innerHTML = "We don't want to move this.";
+            } else if (errorType === 'dont_move_v2t') {
+                feedbackEl.innerHTML = "We want to isolate v₂, so leave that term there and move the other term.";
+            } else if (errorType === 'dont_move_half_at_sq') {
+                feedbackEl.innerHTML = "We want to isolate a, so leave that term there and move the other term.";
+            } else if (errorType === 'wrong_operation_sub') {
+                feedbackEl.innerHTML = "Since this term is positive, you need to use subtraction to move it to the other side.";
+            } else if (errorType === 'wrong_operation_add') {
+                feedbackEl.innerHTML = "Since this term is being subtracted, you need to use addition to move it to the other side.";
+            } else if (errorType === 'invalid_op') {
+                feedbackEl.innerHTML = "That operation will not help isolate your variable.";
+            } else if (errorType === 'dont_clear_target_a') {
+                feedbackEl.innerHTML = "Don't clear a! We want to leave a isolated on this side.";
+            } else if (errorType === 'dont_clear_target_t') {
+                feedbackEl.innerHTML = "Don't clear t! We want to leave t on this side so we can isolate it next.";
+            } else if (errorType === 'dont_clear_target_v2') {
+                feedbackEl.innerHTML = "Don't clear v₂! We want to leave v₂ isolated on this side.";
+            }
+            
+            feedbackEl.classList.remove('shake');
+            void feedbackEl.offsetWidth; 
+            feedbackEl.classList.add('shake');
+        }
+
         render();
-    }
-
-    function executeDerivationAction(op) {
-        clearFeedbackNode();
-
-        if (targetMode === 't') {
-            if (activeSelectedId === 'denominator_constant_2') {
-                if (op === 'multiply') advanceDerivation(1);
-                else showPedagogicalError('invalid_op');
-            } else if (activeSelectedId === 'rhs_atsq_isolate') {
-                if (op === 'divide') advanceDerivation(2);
-                else showPedagogicalError('invalid_op');
-            } else if (activeSelectedId === 'rhs_tsq_isolate') {
-                if (op === 'root') advanceDerivation(3);
-                else showPedagogicalError('invalid_op');
-            } else {
-                showPedagogicalError('invalid_op');
-            }
-        }
-        else if (targetMode === 'v2') {
-            if (activeSelectedId === 'remove_half_at_sq_target') {
-                if (op === 'add') advanceDerivation(1);
-                else showPedagogicalError('wrong_operation_add');
-            } else if (activeSelectedId === 'remove_v2t_target') {
-                showPedagogicalError('dont_move_v2t');
-            } else if (activeSelectedId === 'rhs_v2t') {
-                if (op === 'divide') advanceDerivation(2);
-                else showPedagogicalError('invalid_op');
-            } else {
-                showPedagogicalError('invalid_op');
-            }
-        }
-        else if (targetMode === 'a') {
-            if (activeSelectedId === 'remove_v2t_target') {
-                if (op === 'subtract') advanceDerivation(1);
-                else showPedagogicalError('wrong_operation_sub');
-            } else if (activeSelectedId === 'remove_half_at_sq_target') {
-                showPedagogicalError('dont_move_half_at_sq');
-            } else if (activeSelectedId === 'denominator_constant_2') {
-                if (op === 'multiply') advanceDerivation(2);
-                else showPedagogicalError('invalid_op');
-            } else if (activeSelectedId === 'rhs_at_sq') {
-                if (op === 'divide') advanceDerivation(3);
-                else showPedagogicalError('invalid_op');
-            } else {
-                showPedagogicalError('invalid_op');
-            }
-        }
-    }
-
-    function advanceDerivation(nextState) {
-        derivationState = nextState;
-        activeSelectedId = null;
-        render();
-    }
-
-    function clearDerivationSelection() {
-        activeSelectedId = null;
-    }
-
-    function resetToLanding() {
-        targetMode = null;
-        derivationState = 0;
-        clearDerivationSelection();
-        render();
-    }
-
-    function clearFeedbackNode() {
-        const feedbackEl = document.getElementById('feedback');
-        if (feedbackEl) {
-            feedbackEl.innerHTML = "";
-            feedbackEl.className = "";
-        }
-    }
-
-    function showPedagogicalError(errorType) {
-        const feedbackEl = document.getElementById('feedback');
-        if (!feedbackEl) return;
-
-        if (errorType === 'denominator_first') {
-            feedbackEl.innerHTML = "Clear the denominator first.";
-        } else if (errorType === 'dont_move_a') {
-            feedbackEl.innerHTML = "We don't want to move a.";
-        } else if (errorType === 'dont_move_this') {
-            feedbackEl.innerHTML = "We don't want to move this.";
-        } else if (errorType === 'dont_move_v2t') {
-            feedbackEl.innerHTML = "We want to isolate v₂, so leave that term there and move the other term.";
-        } else if (errorType === 'dont_move_half_at_sq') {
-            feedbackEl.innerHTML = "We want to isolate a, so leave that term there and move the other term.";
-        } else if (errorType === 'wrong_operation_sub') {
-            feedbackEl.innerHTML = "Since this term is positive, you need to use subtraction to move it to the other side.";
-        } else if (errorType === 'wrong_operation_add') {
-            feedbackEl.innerHTML = "Since this term is being subtracted, you need to use addition to move it to the other side.";
-        } else if (errorType === 'invalid_op') {
-            feedbackEl.innerHTML = "That operation will not help isolate your variable.";
-        } else if (errorType === 'dont_clear_target_a') {
-            feedbackEl.innerHTML = "Don't clear a! We want to leave a isolated on this side.";
-        } else if (errorType === 'dont_clear_target_t') {
-            feedbackEl.innerHTML = "Don't clear t! We want to leave t on this side so we can isolate it next.";
-        } else if (errorType === 'dont_clear_target_v2') {
-            feedbackEl.innerHTML = "Don't clear v₂! We want to leave v₂ isolated on this side.";
-        }
-        
-        feedbackEl.classList.remove('shake');
-        void feedbackEl.offsetWidth; 
-        feedbackEl.classList.add('shake');
-    }
-
-    render();
-</script></p></body></html>
+    </script>
+</body>
+</html>
