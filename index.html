@@ -40,6 +40,20 @@
             position: relative;
             max-width: 550px;
             width: 100%;
+            border: 1px solid #e2e8f0;
+        }
+
+        .sim-id-badge {
+            position: absolute;
+            top: 16px;
+            right: 24px;
+            font-size: 0.8rem;
+            font-family: monospace;
+            color: #94a3b8;
+            background-color: #f8fafc;
+            padding: 3px 8px;
+            border-radius: 6px;
+            border: 1px solid #e2e8f0;
         }
 
         .top-bar {
@@ -48,6 +62,7 @@
             align-items: center;
             width: 100%;
             gap: 12px;
+            margin-top: 10px; /* Slight top margin to account for absolute badge above */
         }
 
         .restart-btn {
@@ -295,6 +310,7 @@
 </head>
 <body>
     <div class="slide-container">
+        <div id="sim-id" class="sim-id-badge"></div>
         <div class="top-bar">
             <h2 class="slide-title">Kinematics Solver</h2>
             <button class="restart-btn" onclick="resetToLanding()">Start Over</button>
@@ -305,6 +321,20 @@
     </div>
 
     <script>
+        // Custom ID Generator Function
+        function generateSimID() {
+            const d = new Date();
+            const random4 = Math.floor(1000 + Math.random() * 9000);
+            const month = String(d.getMonth() + 1).padStart(2, '0');
+            const day = String(d.getDate()).padStart(2, '0');
+            const yearLastDigit = String(d.getFullYear()).slice(-1);
+
+            return `${random4}${month}${day}${yearLastDigit}`;
+        }
+
+        // Display ID badge on page load
+        document.getElementById('sim-id').innerText = "ID: " + generateSimID();
+
         let targetMode = null; 
         let derivationState = 0; 
         let activeSelectedId = null;
