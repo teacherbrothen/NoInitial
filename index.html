@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kinematics Solver - Equation 4</title>
+    <title>Kinematics Algebra Playground</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Lato:wght@400;700&display=swap" rel="stylesheet">
     
-    <!-- KaTeX CSS & JS CDN -->
+    <!-- KaTeX CDN -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
     <script src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
 
@@ -34,20 +34,18 @@
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05), 0 1px 3px rgba(0, 0, 0, 0.03);
             display: flex;
             flex-direction: column;
-            min-height: auto;
-            overflow: hidden;
-            padding: 30px 24px;
+            padding: 28px 24px;
             position: relative;
-            max-width: 550px;
+            max-width: 620px;
             width: 100%;
             border: 1px solid #e2e8f0;
         }
 
         .sim-id-badge {
             position: absolute;
-            top: 16px;
-            right: 24px;
-            font-size: 0.8rem;
+            top: 14px;
+            right: 20px;
+            font-size: 0.75rem;
             font-family: monospace;
             color: #94a3b8;
             background-color: #f8fafc;
@@ -61,34 +59,43 @@
             justify-content: space-between;
             align-items: center;
             width: 100%;
-            gap: 12px;
-            margin-top: 10px; /* Slight top margin to account for absolute badge above */
+            gap: 10px;
+            margin-top: 12px;
         }
 
-        .restart-btn {
+        .controls-group {
+            display: flex;
+            gap: 8px;
+        }
+
+        .control-btn {
             background-color: #f1f5f9;
             border: 1.5px solid #cbd5e1;
-            border-radius: 12px;
+            border-radius: 10px;
             color: #475569;
             cursor: pointer;
             font-family: 'Lato', sans-serif;
             font-size: 13px;
             font-weight: 700;
-            padding: 8px 14px;
+            padding: 7px 12px;
             transition: all 0.2s ease;
             white-space: nowrap;
         }
-        .restart-btn:hover {
+        .control-btn:hover:not(:disabled) {
             background-color: #e2e8f0;
             color: #0f172a;
             border-color: #94a3b8;
             transform: translateY(-1px);
         }
+        .control-btn:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
 
         h2.slide-title {
             color: #1e293b;
             font-family: 'Poppins', sans-serif;
-            font-size: 22px;
+            font-size: 21px;
             font-weight: 700;
             margin: 0;
             flex-grow: 1;
@@ -97,38 +104,86 @@
 
         .instructions {
             color: #64748b;
-            font-size: 16px;
-            font-weight: 400;
-            margin: 15px 0 10px 0;
+            font-size: 14px;
+            font-weight: 500;
+            margin: 12px 0 8px 0;
             text-align: center;
+        }
+
+        /* Banners */
+        .banner {
+            padding: 11px 15px;
+            border-radius: 12px;
+            font-size: 13px;
+            line-height: 1.5;
+            text-align: center;
+            margin-bottom: 12px;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .isolated-banner {
+            background-color: #dcfce7;
+            border: 1.5px solid #86efac;
+            color: #166534;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+
+        .pseudo-isolated-banner {
+            background-color: #fffbeb;
+            border: 1.5px solid #fde68a;
+            color: #92400e;
+        }
+
+        .info-banner {
+            background-color: #eff6ff;
+            border: 1.5px solid #bfdbfe;
+            color: #1e40af;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-4px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         .equation-box {
             align-items: center;
             display: flex;
-            font-size: 42px;
-            min-height: 120px;
+            font-size: 34px;
+            min-height: 110px;
             justify-content: center;
-            margin: 5px 0 20px 0;
+            margin: 5px 0 16px 0;
             user-select: none;
             color: #0f172a;
             flex-wrap: wrap;
+            background: #fafafa;
+            border-radius: 16px;
+            border: 1px solid #f1f5f9;
+            padding: 12px;
+            gap: 4px;
         }
 
-        .equation-box.scaled-step {
-            font-size: 32px;
+        .side { 
+            display: inline-flex; 
+            align-items: center; 
+            justify-content: center; 
+            padding: 0 4px; 
+            vertical-align: middle;
+            flex-wrap: wrap;
         }
-
-        .side { display: inline-flex; align-items: center; justify-content: center; padding: 0 4px; }
 
         .clickable-block {
             align-items: center;
-            border-radius: 12px;
+            border-radius: 10px;
             border: 2px dashed #cbd5e1;
-            background-color: #f8fafc;
+            background-color: #ffffff;
             cursor: pointer;
             display: inline-flex;
-            padding: 6px 12px;
+            padding: 4px 8px;
+            margin: 2px 3px;
             transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
@@ -142,169 +197,122 @@
             background-color: #4f46e5 !important; 
             border: 2px solid #4338ca !important;
             color: #ffffff !important; 
-            box-shadow: 0 8px 20px rgba(79, 70, 229, 0.25);
+            box-shadow: 0 6px 16px rgba(79, 70, 229, 0.25);
         }
-        /* Ensure KaTeX font turns white when selected */
         .selected .katex { color: #ffffff !important; }
 
-        .sign { margin: 0 6px; font-weight: 600; font-family: 'Poppins', sans-serif; color: #64748b; }
-        .equals { margin: 0 10px; font-weight: 400; font-family: 'Poppins', sans-serif; color: #334155; }
+        .sign { margin: 0 4px; font-weight: 600; font-family: 'Poppins', sans-serif; color: #64748b; font-size: 24px; }
+        .equals { margin: 0 8px; font-weight: 400; font-family: 'Poppins', sans-serif; color: #334155; font-size: 30px; }
 
-        .canceled-wrapper {
-            align-items: center;
-            display: inline-flex;
-            position: relative;
-            opacity: 0.5;
-        }
-        .canceled-wrapper::after {
-            border-bottom: 5px solid #ef4444;
-            content: "";
-            left: -10%;
-            position: absolute;
-            top: 50%;
-            transform: rotate(-12deg);
-            width: 120%;
-            border-radius: 2px;
-        }
-
-        /* Operational Interaction Panel Container */
         .action-panel {
             align-items: center;
             background-color: #f8fafc;
-            border-radius: 20px;
+            border-radius: 18px;
             border: 1px solid #e2e8f0;
             display: flex;
             flex-direction: column;
             justify-content: center;
             margin: 0 auto;
-            min-height: 200px;
-            padding: 20px 16px;
+            min-height: 180px;
+            padding: 18px 16px;
             width: 100%;
-            position: relative;
-            z-index: 10;
         }
 
         .action-label {
             color: #475569;
-            font-size: 12px;
+            font-size: 11px;
             font-weight: 700;
-            letter-spacing: 1px;
+            letter-spacing: 0.8px;
             margin-bottom: 12px;
             text-align: center;
             text-transform: uppercase;
         }
-
-        /* Preserve math variable lowercase/uppercase inside action headers */
-        .action-label .katex {
-            text-transform: none !important;
-        }
-
-        #feedback { 
-            color: #ef4444; 
-            font-size: 15px; 
-            font-weight: 700;
-            margin: 0 auto 8px auto;
-            min-height: 20px;
-            text-align: center;
-            width: 100%;
-        }
-
-        .functional-toolkit {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-            width: 100%;
-            align-items: center;
-        }
-
-        .functional-row {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 12px;
-            width: 100%;
-        }
-
-        .functional-group {
-            display: flex;
-            flex-direction: column;
-            background-color: #ffffff;
-            border: 1px solid #e2e8f0;
-            border-radius: 16px;
-            padding: 10px 12px;
-            gap: 8px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
-        }
-
-        .group-label {
-            font-size: 10px;
-            font-weight: 700;
-            color: #94a3b8;
-            text-transform: uppercase;
-            letter-spacing: 0.8px;
-            text-align: center;
-            margin-bottom: 2px;
-        }
-
-        .full-width-row {
-            width: 100%;
-            display: flex;
-            justify-content: center;
-        }
-
-        .full-width-row button {
-            width: 100%;
-        }
+        .action-label .katex { text-transform: none !important; }
 
         .choices-container {
             display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            justify-content: center;
+            flex-direction: column;
+            gap: 9px;
             width: 100%;
         }
 
-        button {
+        .op-button {
             align-items: center;
             background-color: #ffffff;
             border-radius: 12px;
             border: 1.5px solid #cbd5e1;
             color: #1e293b;
             cursor: pointer;
-            display: inline-flex;
+            display: flex;
             font-family: 'Poppins', sans-serif;
-            font-size: 14px;
+            font-size: 13.5px;
             font-weight: 600;
-            justify-content: center;
-            padding: 8px 14px;
+            justify-content: flex-start;
+            padding: 9px 14px;
             transition: all 0.2s ease;
-            min-height: 44px;
-            box-shadow: 0 1px 2px rgba(0,0,0,0.04);
+            min-height: 42px;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.03);
+            text-align: left;
         }
 
-        button:hover:not(:disabled) { 
+        .op-button:hover { 
             background-color: #4f46e5; 
             color: #ffffff; 
             border-color: #4f46e5;
-            box-shadow: 0 4px 12px rgba(79, 70, 229, 0.25);
+            box-shadow: 0 4px 12px rgba(79, 70, 229, 0.22);
             transform: translateY(-1px);
         }
 
-        button:hover .katex {
+        .op-button:hover .katex {
             color: #ffffff !important;
         }
-        
-        button:disabled { 
-            border-color: #f1f5f9; 
-            background-color: #f8fafc;
-            color: #cbd5e1; 
-            cursor: not-allowed; 
+
+        .op-tag {
+            font-size: 10px;
+            background-color: #e0e7ff;
+            color: #4338ca;
+            padding: 2px 7px;
+            border-radius: 6px;
+            margin-right: 10px;
+            text-transform: uppercase;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            flex-shrink: 0;
+        }
+        .op-button:hover .op-tag {
+            background-color: #3730a3;
+            color: #ffffff;
         }
 
-        .shake { animation: shake 0.4s ease-in-out; }
-        @keyframes shake {
-            0%, 100% { transform: translateX(0); }
-            25% { transform: translateX(-6px); }
-            75% { transform: translateX(6px); }
+        .history-section {
+            margin-top: 14px;
+            padding-top: 12px;
+            border-top: 1px dashed #e2e8f0;
+            width: 100%;
+        }
+        .history-title {
+            font-size: 11px;
+            font-weight: 700;
+            color: #94a3b8;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            margin-bottom: 6px;
+        }
+        .history-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            max-height: 75px;
+            overflow-y: auto;
+        }
+        .history-badge {
+            background: #f1f5f9;
+            color: #475569;
+            padding: 3px 8px;
+            border-radius: 6px;
+            font-size: 11.5px;
+            font-weight: 600;
+            border: 1px solid #e2e8f0;
         }
     </style>
 </head>
@@ -312,524 +320,827 @@
     <div class="slide-container">
         <div id="sim-id" class="sim-id-badge"></div>
         <div class="top-bar">
-            <h2 class="slide-title">Kinematics Solver</h2>
-            <button class="restart-btn" onclick="resetToLanding()">Start Over</button>
+            <h2 class="slide-title">Algebra Playground</h2>
+            <div class="controls-group">
+                <button id="undo-btn" class="control-btn" onclick="undoStep()" disabled>↩ Undo</button>
+                <button class="control-btn" onclick="resetPlayground()">Start Again</button>
+            </div>
         </div>
-        <p id="instruction-text" class="instructions">Select the variable you want to solve for.</p>
+
+        <p id="instruction-text" class="instructions">Click any term or factor to see what operations you can apply to both sides.</p>
+        
+        <div id="isolation-banner-slot"></div>
         <div id="equation-container" class="equation-box"></div>
         <div id="dynamic-panel" class="action-panel"></div>
+
+        <div class="history-section">
+            <div class="history-title">Step History</div>
+            <div id="history-container" class="history-list"></div>
+        </div>
     </div>
 
     <script>
-        // Custom ID Generator Function
         function generateSimID() {
             const d = new Date();
             const random4 = Math.floor(1000 + Math.random() * 9000);
             const month = String(d.getMonth() + 1).padStart(2, '0');
             const day = String(d.getDate()).padStart(2, '0');
             const yearLastDigit = String(d.getFullYear()).slice(-1);
-
             return `${random4}${month}${day}${yearLastDigit}`;
         }
-
-        // Display ID badge on page load
         document.getElementById('sim-id').innerText = "ID: " + generateSimID();
 
-        let targetMode = null; 
-        let derivationState = 0; 
-        let activeSelectedId = null;
-
-        // Standardized KaTeX render helpers (displayMode: false for tight inline flow)
         const kRender = (tex) => katex.renderToString(tex, { throwOnError: false, displayMode: false });
-        const kRenderDisplay = (tex) => katex.renderToString(tex, { throwOnError: false, displayMode: true });
 
-        const htmlD = () => kRender('d');
-        const htmlV2 = () => kRender('v_2');
-        const htmlT = () => kRender('t');
-        const htmlTSq = () => kRender('t^2');
-        const htmlA = () => kRender('a');
-        const html2Val = () => kRender('2');
-        const htmlMinus2Val = () => kRender('-2');
-        const htmlOpenParen = () => kRender('(');
-        const htmlCloseParen = () => kRender(')');
-        const htmlHalfATSq = () => kRender('\\frac{1}{2}at^2');
+        /*
+            PLAYGROUND STATE GRAPH
+        */
+        const STATES = {
+            'init': {
+                isolated: null,
+                pseudoIsolated: null,
+                infoType: null,
+                render: (sel) => `
+                    <div class="side">
+                        <span class="clickable-block ${sel === 'd' ? 'selected' : ''}" onclick="selectItem('d')">${kRender('d')}</span>
+                    </div>
+                    <span class="equals">=</span>
+                    <div class="side">
+                        <span class="clickable-block ${sel === 'v2t' ? 'selected' : ''}" onclick="selectItem('v2t')">${kRender('v_2 t')}</span>
+                        <span class="sign">-</span>
+                        <span class="clickable-block ${sel === 'half_at2' ? 'selected' : ''}" onclick="selectItem('half_at2')">${kRender('\\frac{1}{2}at^2')}</span>
+                    </div>`,
+                actions: {
+                    'd': [
+                        { label: `Subtract ${kRender('d')} from both sides`, next: 'zero_form', desc: 'Subtracted d from both sides' }
+                    ],
+                    'v2t': [
+                        { label: `Subtract ${kRender('v_2 t')} from both sides`, next: 'sub_v2t', desc: 'Subtracted v₂t from both sides' },
+                        { label: `Divide both sides by ${kRender('t')}`, next: 'div_t_init', desc: 'Divided both sides by t' }
+                    ],
+                    'half_at2': [
+                        { label: `Add ${kRender('\\frac{1}{2}at^2')} to both sides`, next: 'add_half_at2', desc: 'Added ½at² to both sides' },
+                        { label: `Multiply both sides by ${kRender('2')}`, next: 'mult_2_init', desc: 'Multiplied both sides by 2' },
+                        { label: `Multiply both sides by ${kRender('-2')}`, next: 'mult_neg2_init', desc: 'Multiplied both sides by -2' }
+                    ]
+                }
+            },
 
-        const panel = document.getElementById('dynamic-panel');
+            'sub_v2t': {
+                isolated: null,
+                pseudoIsolated: null,
+                infoType: null,
+                render: (sel) => `
+                    <div class="side">
+                        <span class="clickable-block ${sel === 'lhs' ? 'selected' : ''}" onclick="selectItem('lhs')">${kRender('d - v_2 t')}</span>
+                    </div>
+                    <span class="equals">=</span>
+                    <div class="side">
+                        <span class="clickable-block ${sel === 'rhs_half' ? 'selected' : ''}" onclick="selectItem('rhs_half')">${kRender('-\\frac{1}{2}')}</span>
+                        <span class="clickable-block ${sel === 'rhs_a' ? 'selected' : ''}" onclick="selectItem('rhs_a')">${kRender('a')}</span>
+                        <span class="clickable-block ${sel === 'rhs_t2' ? 'selected' : ''}" onclick="selectItem('rhs_t2')">${kRender('t^2')}</span>
+                    </div>`,
+                actions: {
+                    'lhs': [
+                        { label: `Add ${kRender('v_2 t')} to both sides`, next: 'init', desc: 'Added v₂t back to both sides' },
+                        { label: `Multiply both sides by ${kRender('-1')}`, next: 'v2t_minus_d', desc: 'Multiplied both sides by -1' }
+                    ],
+                    'rhs_half': [
+                        { label: `Multiply both sides by ${kRender('-2')} (clears negative fraction)`, next: 'mult_neg2_sub_v2t', desc: 'Multiplied both sides by -2' },
+                        { label: `Multiply both sides by ${kRender('2')} (leaves negative sign)`, next: 'mult_pos2_sub_v2t', desc: 'Multiplied both sides by 2' }
+                    ],
+                    'rhs_a': [
+                        { label: `Divide both sides by ${kRender('a')}`, next: 'sub_v2t_div_a', desc: 'Divided both sides by a' }
+                    ],
+                    'rhs_t2': [
+                        { label: `Divide both sides by ${kRender('t^2')}`, next: 'sub_v2t_div_t2', desc: 'Divided both sides by t²' },
+                        { label: `Divide both sides by ${kRender('t')}`, next: 'sub_v2t_div_t', desc: 'Divided both sides by t' }
+                    ]
+                }
+            },
+
+            'mult_pos2_sub_v2t': {
+                isolated: null,
+                pseudoIsolated: null,
+                infoType: null,
+                render: (sel) => `
+                    <div class="side">
+                        <span class="clickable-block ${sel === 'lhs' ? 'selected' : ''}" onclick="selectItem('lhs')">${kRender('2(d - v_2 t)')}</span>
+                    </div>
+                    <span class="equals">=</span>
+                    <div class="side">
+                        <span class="clickable-block ${sel === 'rhs_neg_a' ? 'selected' : ''}" onclick="selectItem('rhs_neg_a')">${kRender('-a')}</span>
+                        <span class="clickable-block ${sel === 'rhs_t2' ? 'selected' : ''}" onclick="selectItem('rhs_t2')">${kRender('t^2')}</span>
+                    </div>`,
+                actions: {
+                    'lhs': [
+                        { label: `Divide both sides by ${kRender('2')}`, next: 'sub_v2t', desc: 'Divided both sides by 2' },
+                        { label: `Multiply both sides by ${kRender('-1')}`, next: 'mult_neg2_sub_v2t', desc: 'Multiplied both sides by -1' }
+                    ],
+                    'rhs_neg_a': [
+                        { label: `Divide both sides by ${kRender('-a')}`, next: 't2_isolated_neg', desc: 'Divided both sides by -a' },
+                        { label: `Multiply both sides by ${kRender('-1')}`, next: 'mult_neg2_sub_v2t', desc: 'Multiplied both sides by -1' }
+                    ],
+                    'rhs_t2': [
+                        { label: `Divide both sides by ${kRender('-t^2')} (Isolates a!)`, next: 'a_isolated_neg', desc: 'Divided both sides by -t²' },
+                        { label: `Divide both sides by ${kRender('t^2')}`, next: 'a_isolated_neg_half', desc: 'Divided both sides by t²' }
+                    ]
+                }
+            },
+
+            'a_isolated_neg_half': {
+                isolated: null,
+                pseudoIsolated: null,
+                infoType: null,
+                render: (sel) => `
+                    <div class="side">
+                        <span class="clickable-block ${sel === 'lhs' ? 'selected' : ''}" onclick="selectItem('lhs')">${kRender('\\frac{2(d - v_2 t)}{t^2}')}</span>
+                    </div>
+                    <span class="equals">=</span>
+                    <div class="side">
+                        <span class="clickable-block ${sel === 'rhs' ? 'selected' : ''}" onclick="selectItem('rhs')">${kRender('-a')}</span>
+                    </div>`,
+                actions: {
+                    'lhs': [
+                        { label: `Multiply both sides by ${kRender('-1')}`, next: 'a_isolated_neg', desc: 'Multiplied both sides by -1 (Isolates a!)' }
+                    ],
+                    'rhs': [
+                        { label: `Multiply both sides by ${kRender('-1')}`, next: 'a_isolated_neg', desc: 'Multiplied both sides by -1 (Isolates a!)' }
+                    ]
+                }
+            },
+
+            'mult_neg2_sub_v2t': {
+                isolated: null,
+                pseudoIsolated: null,
+                infoType: null,
+                render: (sel) => `
+                    <div class="side">
+                        <span class="clickable-block ${sel === 'lhs' ? 'selected' : ''}" onclick="selectItem('lhs')">${kRender('-2(d - v_2 t)')}</span>
+                    </div>
+                    <span class="equals">=</span>
+                    <div class="side">
+                        <span class="clickable-block ${sel === 'rhs_a' ? 'selected' : ''}" onclick="selectItem('rhs_a')">${kRender('a')}</span>
+                        <span class="clickable-block ${sel === 'rhs_t2' ? 'selected' : ''}" onclick="selectItem('rhs_t2')">${kRender('t^2')}</span>
+                    </div>`,
+                actions: {
+                    'lhs': [
+                        { label: `Divide both sides by ${kRender('-2')}`, next: 'sub_v2t', desc: 'Divided both sides by -2' },
+                        { label: `Distribute the ${kRender('-2')}`, next: 'mult_2_v2t_minus_d', desc: 'Distributed negative sign' }
+                    ],
+                    'rhs_a': [
+                        { label: `Divide both sides by ${kRender('a')}`, next: 't2_isolated_neg', desc: 'Divided both sides by a' }
+                    ],
+                    'rhs_t2': [
+                        { label: `Divide both sides by ${kRender('t^2')}`, next: 'a_isolated_neg', desc: 'Divided both sides by t² (Isolates a!)' }
+                    ]
+                }
+            },
+
+            'sub_v2t_div_t2': {
+                isolated: null,
+                pseudoIsolated: null,
+                infoType: null,
+                render: (sel) => `
+                    <div class="side">
+                        <span class="clickable-block ${sel === 'lhs' ? 'selected' : ''}" onclick="selectItem('lhs')">${kRender('\\frac{d - v_2 t}{t^2}')}</span>
+                    </div>
+                    <span class="equals">=</span>
+                    <div class="side">
+                        <span class="clickable-block ${sel === 'rhs_half' ? 'selected' : ''}" onclick="selectItem('rhs_half')">${kRender('-\\frac{1}{2}')}</span>
+                        <span class="clickable-block ${sel === 'rhs_a' ? 'selected' : ''}" onclick="selectItem('rhs_a')">${kRender('a')}</span>
+                    </div>`,
+                actions: {
+                    'lhs': [
+                        { label: `Multiply both sides by ${kRender('t^2')}`, next: 'sub_v2t', desc: 'Multiplied both sides by t²' }
+                    ],
+                    'rhs_half': [
+                        { label: `Multiply both sides by ${kRender('-2')}`, next: 'a_isolated_neg', desc: 'Multiplied both sides by -2 (Isolates a!)' }
+                    ],
+                    'rhs_a': [
+                        { label: `Multiply both sides by ${kRender('-2')}`, next: 'a_isolated_neg', desc: 'Multiplied both sides by -2 to isolate a' }
+                    ]
+                }
+            },
+
+            'sub_v2t_div_a': {
+                isolated: null,
+                pseudoIsolated: null,
+                infoType: null,
+                render: (sel) => `
+                    <div class="side">
+                        <span class="clickable-block ${sel === 'lhs' ? 'selected' : ''}" onclick="selectItem('lhs')">${kRender('\\frac{d - v_2 t}{a}')}</span>
+                    </div>
+                    <span class="equals">=</span>
+                    <div class="side">
+                        <span class="clickable-block ${sel === 'rhs_half' ? 'selected' : ''}" onclick="selectItem('rhs_half')">${kRender('-\\frac{1}{2}')}</span>
+                        <span class="clickable-block ${sel === 'rhs_t2' ? 'selected' : ''}" onclick="selectItem('rhs_t2')">${kRender('t^2')}</span>
+                    </div>`,
+                actions: {
+                    'lhs': [
+                        { label: `Multiply both sides by ${kRender('a')}`, next: 'sub_v2t', desc: 'Multiplied both sides by a' }
+                    ],
+                    'rhs_half': [
+                        { label: `Multiply both sides by ${kRender('-2')}`, next: 't2_isolated_neg', desc: 'Multiplied both sides by -2' }
+                    ],
+                    'rhs_t2': [
+                        { label: `Multiply both sides by ${kRender('-2')}`, next: 't2_isolated_neg', desc: 'Multiplied both sides by -2 to leave t² isolated' }
+                    ]
+                }
+            },
+
+            'sub_v2t_div_t': {
+                isolated: null,
+                pseudoIsolated: null,
+                infoType: null,
+                render: (sel) => `
+                    <div class="side">
+                        <span class="clickable-block ${sel === 'lhs' ? 'selected' : ''}" onclick="selectItem('lhs')">${kRender('\\frac{d - v_2 t}{t}')}</span>
+                    </div>
+                    <span class="equals">=</span>
+                    <div class="side">
+                        <span class="clickable-block ${sel === 'rhs_half' ? 'selected' : ''}" onclick="selectItem('rhs_half')">${kRender('-\\frac{1}{2}')}</span>
+                        <span class="clickable-block ${sel === 'rhs_at' ? 'selected' : ''}" onclick="selectItem('rhs_at')">${kRender('at')}</span>
+                    </div>`,
+                actions: {
+                    'lhs': [
+                        { label: `Multiply both sides by ${kRender('t')}`, next: 'sub_v2t', desc: 'Multiplied both sides by t' }
+                    ],
+                    'rhs_half': [
+                        { label: `Multiply both sides by ${kRender('-2')}`, next: 'sub_v2t_div_t_cleared', desc: 'Multiplied both sides by -2' }
+                    ],
+                    'rhs_at': [
+                        { label: `Divide both sides by ${kRender('t')}`, next: 'sub_v2t_div_t2', desc: 'Divided both sides by t' }
+                    ]
+                }
+            },
+
+            'sub_v2t_div_t_cleared': {
+                isolated: null,
+                pseudoIsolated: null,
+                infoType: null,
+                render: (sel) => `
+                    <div class="side">
+                        <span class="clickable-block ${sel === 'lhs' ? 'selected' : ''}" onclick="selectItem('lhs')">${kRender('\\frac{-2(d - v_2 t)}{t}')}</span>
+                    </div>
+                    <span class="equals">=</span>
+                    <div class="side">
+                        <span class="clickable-block ${sel === 'rhs_a' ? 'selected' : ''}" onclick="selectItem('rhs_a')">${kRender('a')}</span>
+                        <span class="clickable-block ${sel === 'rhs_t' ? 'selected' : ''}" onclick="selectItem('rhs_t')">${kRender('t')}</span>
+                    </div>`,
+                actions: {
+                    'lhs': [
+                        { label: `Multiply both sides by ${kRender('t')}`, next: 'mult_neg2_sub_v2t', desc: 'Multiplied both sides by t' }
+                    ],
+                    'rhs_a': [
+                        { label: `Divide both sides by ${kRender('a')}`, next: 't_isolated_alt', desc: 'Divided both sides by a' }
+                    ],
+                    'rhs_t': [
+                        { label: `Divide both sides by ${kRender('t')}`, next: 'a_isolated_neg', desc: 'Divided both sides by t (Isolates a!)' }
+                    ]
+                }
+            },
+
+            't_isolated_alt': {
+                isolated: null,
+                pseudoIsolated: 't',
+                infoType: null,
+                render: (sel) => `
+                    <div class="side">
+                        <span class="clickable-block ${sel === 'frac' ? 'selected' : ''}" onclick="selectItem('frac')">${kRender('\\frac{-2(d - v_2 t)}{at}')}</span>
+                    </div>
+                    <span class="equals">=</span>
+                    <div class="side">
+                        <span class="clickable-block ${sel === 't' ? 'selected' : ''}" onclick="selectItem('t')">${kRender('t')}</span>
+                    </div>`,
+                actions: {
+                    'frac': [
+                        { label: `Multiply both sides by ${kRender('a')}`, next: 'sub_v2t_div_t_cleared', desc: 'Multiplied both sides by a' }
+                    ],
+                    't': [
+                        { label: `Multiply both sides by ${kRender('t')}`, next: 't2_isolated_neg', desc: 'Multiplied both sides by t' }
+                    ]
+                }
+            },
+
+            'a_isolated_neg': {
+                isolated: 'a',
+                pseudoIsolated: null,
+                infoType: null,
+                render: (sel) => `
+                    <div class="side">
+                        <span class="clickable-block ${sel === 'frac' ? 'selected' : ''}" onclick="selectItem('frac')">${kRender('\\frac{-2(d - v_2 t)}{t^2}')}</span>
+                    </div>
+                    <span class="equals">=</span>
+                    <div class="side">
+                        <span class="clickable-block ${sel === 'a' ? 'selected' : ''}" onclick="selectItem('a')">${kRender('a')}</span>
+                    </div>`,
+                actions: {
+                    'frac': [
+                        { label: `Simplify numerator into ${kRender('2(v_2 t - d)')}`, next: 'a_isolated_clean', desc: 'Simplified signs in numerator' },
+                        { label: `Multiply both sides by ${kRender('t^2')}`, next: 'mult_neg2_sub_v2t', desc: 'Multiplied both sides by t²' }
+                    ],
+                    'a': [
+                        { label: `Multiply both sides by ${kRender('t^2')}`, next: 'mult_neg2_sub_v2t', desc: 'Multiplied both sides by t²' }
+                    ]
+                }
+            },
+
+            'a_isolated_clean': {
+                isolated: 'a',
+                pseudoIsolated: null,
+                infoType: null,
+                render: (sel) => `
+                    <div class="side">
+                        <span class="clickable-block ${sel === 'frac' ? 'selected' : ''}" onclick="selectItem('frac')">${kRender('\\frac{2(v_2 t - d)}{t^2}')}</span>
+                    </div>
+                    <span class="equals">=</span>
+                    <div class="side">
+                        <span class="clickable-block ${sel === 'a' ? 'selected' : ''}" onclick="selectItem('a')">${kRender('a')}</span>
+                    </div>`,
+                actions: {
+                    'frac': [
+                        { label: `Multiply both sides by ${kRender('t^2')}`, next: 'mult_2_v2t_minus_d', desc: 'Multiplied both sides by t²' }
+                    ],
+                    'a': [
+                        { label: `Multiply both sides by ${kRender('t^2')}`, next: 'mult_2_v2t_minus_d', desc: 'Multiplied both sides by t²' }
+                    ]
+                }
+            },
+
+            't2_isolated_neg': {
+                isolated: null,
+                pseudoIsolated: null,
+                infoType: null,
+                render: (sel) => `
+                    <div class="side">
+                        <span class="clickable-block ${sel === 'frac' ? 'selected' : ''}" onclick="selectItem('frac')">${kRender('\\frac{-2(d - v_2 t)}{a}')}</span>
+                    </div>
+                    <span class="equals">=</span>
+                    <div class="side">
+                        <span class="clickable-block ${sel === 't2' ? 'selected' : ''}" onclick="selectItem('t2')">${kRender('t^2')}</span>
+                    </div>`,
+                actions: {
+                    'frac': [
+                        { label: `Multiply both sides by ${kRender('a')}`, next: 'mult_neg2_sub_v2t', desc: 'Multiplied both sides by a' }
+                    ],
+                    't2': [
+                        { label: `Take square root (√) of both sides`, next: 't_isolated_neg', desc: 'Took square root of both sides' }
+                    ]
+                }
+            },
+
+            't_isolated_neg': {
+                isolated: null,
+                pseudoIsolated: 't',
+                infoType: null,
+                render: (sel) => `
+                    <div class="side">
+                        <span class="clickable-block ${sel === 'root' ? 'selected' : ''}" onclick="selectItem('root')">${kRender('\\sqrt{\\frac{-2(d - v_2 t)}{a}}')}</span>
+                    </div>
+                    <span class="equals">=</span>
+                    <div class="side">
+                        <span class="clickable-block ${sel === 't' ? 'selected' : ''}" onclick="selectItem('t')">${kRender('t')}</span>
+                    </div>`,
+                actions: {
+                    'root': [
+                        { label: `Square both sides`, next: 't2_isolated_neg', desc: 'Squared both sides' }
+                    ],
+                    't': [
+                        { label: `Square both sides`, next: 't2_isolated_neg', desc: 'Squared both sides' }
+                    ]
+                }
+            },
+
+            'v2t_minus_d': {
+                isolated: null,
+                pseudoIsolated: null,
+                infoType: null,
+                render: (sel) => `
+                    <div class="side">
+                        <span class="clickable-block ${sel === 'lhs' ? 'selected' : ''}" onclick="selectItem('lhs')">${kRender('v_2 t - d')}</span>
+                    </div>
+                    <span class="equals">=</span>
+                    <div class="side">
+                        <span class="clickable-block ${sel === 'rhs' ? 'selected' : ''}" onclick="selectItem('rhs')">${kRender('\\frac{1}{2}at^2')}</span>
+                    </div>`,
+                actions: {
+                    'lhs': [
+                        { label: `Multiply both sides by ${kRender('-1')}`, next: 'sub_v2t', desc: 'Multiplied both sides by -1' }
+                    ],
+                    'rhs': [
+                        { label: `Multiply both sides by ${kRender('2')}`, next: 'mult_2_v2t_minus_d', desc: 'Multiplied both sides by 2' }
+                    ]
+                }
+            },
+
+            'mult_2_v2t_minus_d': {
+                isolated: null,
+                pseudoIsolated: null,
+                infoType: null,
+                render: (sel) => `
+                    <div class="side">
+                        <span class="clickable-block ${sel === 'lhs' ? 'selected' : ''}" onclick="selectItem('lhs')">${kRender('2(v_2 t - d)')}</span>
+                    </div>
+                    <span class="equals">=</span>
+                    <div class="side">
+                        <span class="clickable-block ${sel === 'rhs_a' ? 'selected' : ''}" onclick="selectItem('rhs_a')">${kRender('a')}</span>
+                        <span class="clickable-block ${sel === 'rhs_t2' ? 'selected' : ''}" onclick="selectItem('rhs_t2')">${kRender('t^2')}</span>
+                    </div>`,
+                actions: {
+                    'lhs': [
+                        { label: `Divide both sides by ${kRender('2')}`, next: 'v2t_minus_d', desc: 'Divided both sides by 2' }
+                    ],
+                    'rhs_a': [
+                        { label: `Divide both sides by ${kRender('a')}`, next: 't2_isolated_clean', desc: 'Divided both sides by a' }
+                    ],
+                    'rhs_t2': [
+                        { label: `Divide both sides by ${kRender('t^2')}`, next: 'a_isolated_clean', desc: 'Divided both sides by t² (Isolates a!)' }
+                    ]
+                }
+            },
+
+            't2_isolated_clean': {
+                isolated: null,
+                pseudoIsolated: null,
+                infoType: null,
+                render: (sel) => `
+                    <div class="side">
+                        <span class="clickable-block ${sel === 'frac' ? 'selected' : ''}" onclick="selectItem('frac')">${kRender('\\frac{2(v_2 t - d)}{a}')}</span>
+                    </div>
+                    <span class="equals">=</span>
+                    <div class="side">
+                        <span class="clickable-block ${sel === 't2' ? 'selected' : ''}" onclick="selectItem('t2')">${kRender('t^2')}</span>
+                    </div>`,
+                actions: {
+                    'frac': [
+                        { label: `Multiply both sides by ${kRender('a')}`, next: 'mult_2_v2t_minus_d', desc: 'Multiplied both sides by a' }
+                    ],
+                    't2': [
+                        { label: `Take square root (√) of both sides`, next: 't_isolated_clean', desc: 'Took square root of both sides' }
+                    ]
+                }
+            },
+
+            't_isolated_clean': {
+                isolated: null,
+                pseudoIsolated: 't',
+                infoType: null,
+                render: (sel) => `
+                    <div class="side">
+                        <span class="clickable-block ${sel === 'root' ? 'selected' : ''}" onclick="selectItem('root')">${kRender('\\sqrt{\\frac{2(v_2 t - d)}{a}}')}</span>
+                    </div>
+                    <span class="equals">=</span>
+                    <div class="side">
+                        <span class="clickable-block ${sel === 't' ? 'selected' : ''}" onclick="selectItem('t')">${kRender('t')}</span>
+                    </div>`,
+                actions: {
+                    'root': [
+                        { label: `Square both sides`, next: 't2_isolated_clean', desc: 'Squared both sides' }
+                    ],
+                    't': [
+                        { label: `Square both sides`, next: 't2_isolated_clean', desc: 'Squared both sides' }
+                    ]
+                }
+            },
+
+            'add_half_at2': {
+                isolated: null,
+                pseudoIsolated: null,
+                infoType: null,
+                render: (sel) => `
+                    <div class="side">
+                        <span class="clickable-block ${sel === 'lhs' ? 'selected' : ''}" onclick="selectItem('lhs')">${kRender('d + \\frac{1}{2}at^2')}</span>
+                    </div>
+                    <span class="equals">=</span>
+                    <div class="side">
+                        <span class="clickable-block ${sel === 'v2t' ? 'selected' : ''}" onclick="selectItem('v2t')">${kRender('v_2 t')}</span>
+                    </div>`,
+                actions: {
+                    'lhs': [
+                        { label: `Subtract ${kRender('\\frac{1}{2}at^2')} from both sides`, next: 'init', desc: 'Subtracted ½at² from both sides' },
+                        { label: `Multiply both sides by ${kRender('2')}`, next: 'mult_2_rearranged', desc: 'Multiplied both sides by 2' }
+                    ],
+                    'v2t': [
+                        { label: `Divide both sides by ${kRender('t')}`, next: 'v2_isolated_frac', desc: 'Divided both sides by t (Isolates v₂!)' },
+                        { label: `Divide both sides by ${kRender('v_2')}`, next: 't_isolated_from_v2', desc: 'Divided both sides by v₂' }
+                    ]
+                }
+            },
+
+            't_isolated_from_v2': {
+                isolated: null,
+                pseudoIsolated: 't',
+                infoType: null,
+                render: (sel) => `
+                    <div class="side">
+                        <span class="clickable-block ${sel === 'frac' ? 'selected' : ''}" onclick="selectItem('frac')">${kRender('\\frac{d + \\frac{1}{2}at^2}{v_2}')}</span>
+                    </div>
+                    <span class="equals">=</span>
+                    <div class="side">
+                        <span class="clickable-block ${sel === 't' ? 'selected' : ''}" onclick="selectItem('t')">${kRender('t')}</span>
+                    </div>`,
+                actions: {
+                    'frac': [
+                        { label: `Multiply both sides by ${kRender('v_2')}`, next: 'add_half_at2', desc: 'Multiplied both sides by v₂' }
+                    ],
+                    't': [
+                        { label: `Multiply both sides by ${kRender('v_2')}`, next: 'add_half_at2', desc: 'Multiplied both sides by v₂' }
+                    ]
+                }
+            },
+
+            'v2_isolated_frac': {
+                isolated: 'v_2',
+                pseudoIsolated: null,
+                infoType: null,
+                render: (sel) => `
+                    <div class="side">
+                        <span class="clickable-block ${sel === 'frac' ? 'selected' : ''}" onclick="selectItem('frac')">${kRender('\\frac{d + \\frac{1}{2}at^2}{t}')}</span>
+                    </div>
+                    <span class="equals">=</span>
+                    <div class="side">
+                        <span class="clickable-block ${sel === 'v2' ? 'selected' : ''}" onclick="selectItem('v2')">${kRender('v_2')}</span>
+                    </div>`,
+                actions: {
+                    'frac': [
+                        { label: `Multiply both sides by ${kRender('t')}`, next: 'add_half_at2', desc: 'Multiplied both sides by t' },
+                        { label: `Multiply numerator & denominator by 2`, next: 'v2_isolated_clean', desc: 'Simplified compound fraction' }
+                    ],
+                    'v2': [
+                        { label: `Multiply both sides by ${kRender('t')}`, next: 'add_half_at2', desc: 'Multiplied both sides by t' }
+                    ]
+                }
+            },
+
+            'v2_isolated_clean': {
+                isolated: 'v_2',
+                pseudoIsolated: null,
+                infoType: null,
+                render: (sel) => `
+                    <div class="side">
+                        <span class="clickable-block ${sel === 'clean_frac' ? 'selected' : ''}" onclick="selectItem('clean_frac')">${kRender('\\frac{2d + at^2}{2t}')}</span>
+                    </div>
+                    <span class="equals">=</span>
+                    <div class="side">
+                        <span class="clickable-block ${sel === 'v2' ? 'selected' : ''}" onclick="selectItem('v2')">${kRender('v_2')}</span>
+                    </div>`,
+                actions: {
+                    'clean_frac': [
+                        { label: `Multiply both sides by ${kRender('2t')}`, next: 'mult_2_rearranged', desc: 'Multiplied both sides by 2t' }
+                    ],
+                    'v2': [
+                        { label: `Multiply both sides by ${kRender('2t')}`, next: 'mult_2_rearranged', desc: 'Multiplied both sides by 2t' }
+                    ]
+                }
+            },
+
+            'mult_2_init': {
+                isolated: null,
+                pseudoIsolated: null,
+                infoType: null,
+                render: (sel) => `
+                    <div class="side">
+                        <span class="clickable-block ${sel === 'lhs' ? 'selected' : ''}" onclick="selectItem('lhs')">${kRender('2d')}</span>
+                    </div>
+                    <span class="equals">=</span>
+                    <div class="side">
+                        <span class="clickable-block ${sel === 'v2t' ? 'selected' : ''}" onclick="selectItem('v2t')">${kRender('2v_2 t')}</span>
+                        <span class="sign">-</span>
+                        <span class="clickable-block ${sel === 'at2' ? 'selected' : ''}" onclick="selectItem('at2')">${kRender('at^2')}</span>
+                    </div>`,
+                actions: {
+                    'lhs': [
+                        { label: `Divide both sides by ${kRender('2')}`, next: 'init', desc: 'Divided both sides by 2' }
+                    ],
+                    'at2': [
+                        { label: `Add ${kRender('at^2')} to both sides`, next: 'mult_2_rearranged', desc: 'Added at² to both sides' }
+                    ],
+                    'v2t': [
+                        { label: `Subtract ${kRender('2v_2 t')} from both sides`, next: 'mult_pos2_sub_v2t', desc: 'Subtracted 2v₂t from both sides' }
+                    ]
+                }
+            },
+
+            'mult_2_rearranged': {
+                isolated: null,
+                pseudoIsolated: null,
+                infoType: null,
+                render: (sel) => `
+                    <div class="side">
+                        <span class="clickable-block ${sel === 'lhs' ? 'selected' : ''}" onclick="selectItem('lhs')">${kRender('2d + at^2')}</span>
+                    </div>
+                    <span class="equals">=</span>
+                    <div class="side">
+                        <span class="clickable-block ${sel === 'rhs' ? 'selected' : ''}" onclick="selectItem('rhs')">${kRender('2v_2 t')}</span>
+                    </div>`,
+                actions: {
+                    'lhs': [
+                        { label: `Subtract ${kRender('at^2')} from both sides`, next: 'mult_2_init', desc: 'Subtracted at² from both sides' },
+                        { label: `Subtract ${kRender('2d')} from both sides`, next: 'mult_2_v2t_minus_d', desc: 'Subtracted 2d from both sides' }
+                    ],
+                    'rhs': [
+                        { label: `Divide both sides by ${kRender('2t')}`, next: 'v2_isolated_clean', desc: 'Divided both sides by 2t (Isolates v₂!)' }
+                    ]
+                }
+            },
+
+            'zero_form': {
+                isolated: null,
+                pseudoIsolated: null,
+                infoType: 'standard_form',
+                render: (sel) => `
+                    <div class="side">
+                        <span class="clickable-block ${sel === 'zero' ? 'selected' : ''}" onclick="selectItem('zero')">${kRender('0')}</span>
+                    </div>
+                    <span class="equals">=</span>
+                    <div class="side">
+                        <span class="clickable-block ${sel === 'v2t' ? 'selected' : ''}" onclick="selectItem('v2t')">${kRender('v_2 t')}</span>
+                        <span class="sign">-</span>
+                        <span class="clickable-block ${sel === 'half_at2' ? 'selected' : ''}" onclick="selectItem('half_at2')">${kRender('\\frac{1}{2}at^2')}</span>
+                        <span class="sign">-</span>
+                        <span class="clickable-block ${sel === 'd' ? 'selected' : ''}" onclick="selectItem('d')">${kRender('d')}</span>
+                    </div>`,
+                actions: {
+                    'zero': [
+                        { label: `Add ${kRender('d')} to both sides`, next: 'init', desc: 'Added d back to left side' }
+                    ],
+                    'd': [
+                        { label: `Add ${kRender('d')} to both sides`, next: 'init', desc: 'Added d back to left side' }
+                    ],
+                    'half_at2': [
+                        { label: `Add ${kRender('\\frac{1}{2}at^2')} to both sides`, next: 'v2t_minus_d', desc: 'Added ½at² to both sides' }
+                    ],
+                    'v2t': [
+                        { label: `Subtract ${kRender('v_2 t')} from both sides`, next: 'sub_v2t', desc: 'Subtracted v₂t from both sides' }
+                    ]
+                }
+            },
+
+            'div_t_init': {
+                isolated: null,
+                pseudoIsolated: null,
+                infoType: null,
+                render: (sel) => `
+                    <div class="side">
+                        <span class="clickable-block ${sel === 'lhs' ? 'selected' : ''}" onclick="selectItem('lhs')">${kRender('\\frac{d}{t}')}</span>
+                    </div>
+                    <span class="equals">=</span>
+                    <div class="side">
+                        <span class="clickable-block ${sel === 'v2' ? 'selected' : ''}" onclick="selectItem('v2')">${kRender('v_2')}</span>
+                        <span class="sign">-</span>
+                        <span class="clickable-block ${sel === 'half_at' ? 'selected' : ''}" onclick="selectItem('half_at')">${kRender('\\frac{1}{2}at')}</span>
+                    </div>`,
+                actions: {
+                    'lhs': [
+                        { label: `Multiply both sides by ${kRender('t')}`, next: 'init', desc: 'Multiplied both sides by t' }
+                    ],
+                    'v2': [
+                        { label: `Subtract ${kRender('v_2')} from both sides`, next: 'init', desc: 'Subtracted v₂ from both sides' }
+                    ],
+                    'half_at': [
+                        { label: `Add ${kRender('\\frac{1}{2}at')} to both sides`, next: 'v2_alt_isolate', desc: 'Added ½at to both sides' }
+                    ]
+                }
+            },
+
+            'v2_alt_isolate': {
+                isolated: 'v_2',
+                pseudoIsolated: null,
+                infoType: null,
+                render: (sel) => `
+                    <div class="side">
+                        <span class="clickable-block ${sel === 'lhs' ? 'selected' : ''}" onclick="selectItem('lhs')">${kRender('\\frac{d}{t} + \\frac{1}{2}at')}</span>
+                    </div>
+                    <span class="equals">=</span>
+                    <div class="side">
+                        <span class="clickable-block ${sel === 'v2' ? 'selected' : ''}" onclick="selectItem('v2')">${kRender('v_2')}</span>
+                    </div>`,
+                actions: {
+                    'lhs': [
+                        { label: `Subtract ${kRender('\\frac{1}{2}at')} from both sides`, next: 'div_t_init', desc: 'Subtracted ½at from both sides' },
+                        { label: `Multiply both sides by ${kRender('t')}`, next: 'add_half_at2', desc: 'Multiplied both sides by t' }
+                    ],
+                    'v2': [
+                        { label: `Subtract ${kRender('v_2')} from both sides`, next: 'div_t_init', desc: 'Subtracted v₂ from both sides' }
+                    ]
+                }
+            }
+        };
+
+        let currentStateKey = 'init';
+        let activeSelection = null;
+        let historyStack = [];
+
         const eqContainer = document.getElementById('equation-container');
-        const instructionText = document.getElementById('instruction-text');
+        const panel = document.getElementById('dynamic-panel');
+        const bannerSlot = document.getElementById('isolation-banner-slot');
+        const historyContainer = document.getElementById('history-container');
+        const undoBtn = document.getElementById('undo-btn');
 
-        function render() {
-            eqContainer.classList.remove('scaled-step');
+        function renderPlayground() {
+            const state = STATES[currentStateKey] || STATES['init'];
 
-            if (!targetMode) {
-                instructionText.innerHTML = "Select the variable you want to solve for.";
-                eqContainer.innerHTML = kRender('d = v_2 t - \\frac{1}{2}at^2');
-                panel.innerHTML = `
-                    <div class="choices-container">
-                        <button onclick="setTargetMode('v2')">Solve for&nbsp;${htmlV2()}</button>
-                        <button onclick="setTargetMode('a')">Solve for&nbsp;${htmlA()}</button>
-                        <button onclick="setTargetMode('t')">Solve for&nbsp;${htmlT()}</button>
+            // Render Equation
+            eqContainer.innerHTML = state.render(activeSelection);
+
+            // Handle Isolation & Discovery Banners
+            if (state.isolated) {
+                bannerSlot.innerHTML = `
+                    <div class="banner isolated-banner">
+                        <span>🎉</span> Variable ${kRender(state.isolated)} is completely isolated! Feel free to keep manipulating.
                     </div>`;
-                return;
-            }
-
-            if (targetMode === 't') {
-                instructionText.innerHTML = `Isolate the variable ${htmlT()}.`;
-                if (derivationState === 'v2_check') renderV2Check();
-                else if (derivationState === 'quadratic_blocked') renderQuadraticBlocked();
-                else if (derivationState === 'visual_cancellation') renderVisualCancellation();
-                else renderTDerivation();
-            } else if (targetMode === 'v2') {
-                instructionText.innerHTML = `Isolate the variable ${htmlV2()}.`;
-                renderV2Derivation();
-            } else if (targetMode === 'a') {
-                instructionText.innerHTML = `Isolate the variable ${htmlA()}.`;
-                renderADerivation();
-            }
-        }
-
-        function renderV2Check() {
-            panel.innerHTML = `
-                <div class="action-label">CHECK INITIAL CONDITIONS</div>
-                <p style="font-size: 16px; margin-bottom: 16px; text-align: center; color: #334155;">Is the initial velocity (${htmlV2()}) equal to 0?</p>
-                <div class="choices-container">
-                    <button onclick="handleQuadraticResponse(true)">Yes, ${htmlV2()} = 0</button>
-                    <button onclick="handleQuadraticResponse(false)">No, ${htmlV2()} is not 0</button>
-                </div>`;
-        }
-
-        function renderQuadraticBlocked() {
-            panel.innerHTML = `
-                <p style="font-size: 15px; line-height: 1.5; text-align: center; max-width: 100%; margin: 0 auto; color: #475569;">
-                    When ${htmlV2()} is not zero, this equation requires the Quadratic Formula to solve for time. Please select a different variable to isolate.
-                </p>
-                <button onclick="resetToLanding()" style="margin-top: 16px;">Go Back</button>`;
-        }
-
-        function renderVisualCancellation() {
-            eqContainer.innerHTML = `
-                <div class="side">${htmlD()}</div><span class="equals">=</span>
-                <div class="side">
-                    <span class="canceled-wrapper">${kRender('v_2 t')}</span>
-                    <span class="sign" style="color: #cbd5e1;">-</span>
-                    <span class="sign">-</span>${htmlHalfATSq()}
-                </div>`;
-            panel.innerHTML = `
-                <div class="action-label">SIMPLIFY THE EQUATION</div>
-                <button onclick="advanceDerivation(0)">Remove Canceled Term</button>`;
-        }
-
-        function renderTDerivation() {
-            if (derivationState === 0) {
-                eqContainer.innerHTML = `
-                    <div class="side"><span class="clickable-block ${activeSelectedId === 'd_lhs' ? 'selected' : ''}" onclick="selectDerivationBlock('d_lhs')">${htmlD()}</span></div>
-                    <span class="equals">=</span>
-                    <div class="side"><span class="clickable-block ${['rhs_simple_halfatsq', 'denominator_constant_2', 'rhs_atsq_isolate_t_variant'].includes(activeSelectedId) ? 'selected' : ''}" onclick="selectDerivationBlock('rhs_simple_halfatsq')">${kRender('-\\frac{1}{2}at^2')}</span></div>`;
-            } else if (derivationState === 1) {
-                eqContainer.innerHTML = `
-                    <div class="side"><span class="clickable-block ${activeSelectedId === 'lhs_minus_2d' ? 'selected' : ''}" onclick="selectDerivationBlock('lhs_minus_2d')">${kRender('-2d')}</span></div>
-                    <span class="equals">=</span>
-                    <div class="side"><span class="clickable-block ${['rhs_atsq_composite_mode_t', 'rhs_atsq_isolate'].includes(activeSelectedId) ? 'selected' : ''}" onclick="selectDerivationBlock('rhs_atsq_composite_mode_t')">${kRender('at^2')}</span></div>`;
-            } else if (derivationState === 2) {
-                eqContainer.innerHTML = `
-                    <div class="side">
-                        <span class="clickable-block ${activeSelectedId === 'lhs_frac_minus_2da' ? 'selected' : ''}" onclick="selectDerivationBlock('lhs_frac_minus_2da')">
-                            ${kRender('\\frac{-2d}{a}')}
-                        </span>
-                    </div>
-                    <span class="equals">=</span>
-                    <div class="side"><span class="clickable-block ${activeSelectedId === 'rhs_tsq_isolate' ? 'selected' : ''}" onclick="selectDerivationBlock('rhs_tsq_isolate')">${htmlTSq()}</span></div>`;
-            } else if (derivationState === 3) {
-                eqContainer.innerHTML = `
-                    <div class="side">${kRender('\\sqrt{\\frac{-2d}{a}}')}</div>
-                    <span class="equals">=</span>
-                    <div class="side">${htmlT()}</div>`;
-            }
-            renderDerivationToolkit();
-        }
-
-        function renderV2Derivation() {
-            if (derivationState === 0) {
-                eqContainer.innerHTML = `
-                    <div class="side"><span class="clickable-block ${activeSelectedId === 'd_lhs' ? 'selected' : ''}" onclick="selectDerivationBlock('d_lhs')">${htmlD()}</span></div>
-                    <span class="equals">=</span>
-                    <div class="side">
-                        <span class="clickable-block ${activeSelectedId === 'remove_v2t_target' ? 'selected' : ''}" onclick="selectDerivationBlock('remove_v2t_target')">${kRender('v_2 t')}</span>
-                        <span class="sign">-</span>
-                        <span class="clickable-block ${activeSelectedId === 'remove_half_at_sq_target' ? 'selected' : ''}" onclick="selectDerivationBlock('remove_half_at_sq_target')">${htmlHalfATSq()}</span>
+            } else if (state.pseudoIsolated === 't') {
+                bannerSlot.innerHTML = `
+                    <div class="banner pseudo-isolated-banner">
+                        <strong>🔍 Look closely!</strong> Although ${kRender('t')} is by itself on the right, ${kRender('t')} is <em>still on the left side</em>.<br>
+                        Because this equation contains both <strong>${kRender('t')}</strong> and <strong>${kRender('t^2')}</strong>, it <strong>cannot be isolated using standard rearrangement</strong>. Use <strong>↩ Undo</strong> or try isolating <strong>${kRender('v_2')}</strong> or <strong>${kRender('a')}</strong> instead!
                     </div>`;
-            } else if (derivationState === 1) {
-                eqContainer.innerHTML = `
-                    <div class="side"><span class="clickable-block ${activeSelectedId === 'lhs_d_plus_atsq' ? 'selected' : ''}" onclick="selectDerivationBlock('lhs_d_plus_atsq')">${kRender('d + \\frac{1}{2}at^2')}</span></div>
-                    <span class="equals">=</span>
-                    <div class="side"><span class="clickable-block ${['rhs_v2t_composite', 'rhs_v2t'].includes(activeSelectedId) ? 'selected' : ''}" onclick="selectDerivationBlock('rhs_v2t_composite')">${kRender('v_2 t')}</span></div>`;
-            } else if (derivationState === 2) {
-                eqContainer.classList.add('scaled-step');
-                eqContainer.innerHTML = `
-                    <div class="side">${kRender('\\frac{d + \\frac{1}{2}at^2}{t}')}</div>
-                    <span class="equals">=</span>
-                    <div class="side">${htmlV2()}</div>`;
-            }
-            renderDerivationToolkit();
-        }
-
-        function renderADerivation() {
-            if (derivationState === 0) {
-                eqContainer.innerHTML = `
-                    <div class="side"><span class="clickable-block ${activeSelectedId === 'd_lhs' ? 'selected' : ''}" onclick="selectDerivationBlock('d_lhs')">${htmlD()}</span></div>
-                    <span class="equals">=</span>
-                    <div class="side">
-                        <span class="clickable-block ${activeSelectedId === 'remove_v2t_target' ? 'selected' : ''}" onclick="selectDerivationBlock('remove_v2t_target')">${kRender('v_2 t')}</span>
-                        <span class="sign">-</span>
-                        <span class="clickable-block ${activeSelectedId === 'remove_half_at_sq_target' ? 'selected' : ''}" onclick="selectDerivationBlock('remove_half_at_sq_target')">${htmlHalfATSq()}</span>
+            } else if (state.infoType === 'standard_form') {
+                bannerSlot.innerHTML = `
+                    <div class="banner info-banner">
+                        💡 <strong>Standard Quadratic Form!</strong> Setting one side to 0 is the starting setup for the Quadratic Formula ($0 = ax^2 + bx + c$).
                     </div>`;
-            } else if (derivationState === 1) {
-                eqContainer.innerHTML = `
-                    <div class="side"><span class="clickable-block ${activeSelectedId === 'lhs_d_minus_v2t' ? 'selected' : ''}" onclick="selectDerivationBlock('lhs_d_minus_v2t')">${kRender('d - v_2 t')}</span></div>
-                    <span class="equals">=</span>
-                    <div class="side"><span class="clickable-block ${['rhs_simple_halfatsq_mode_a', 'denominator_constant_2', 'rhs_at_sq_isolate_variant'].includes(activeSelectedId) ? 'selected' : ''}" onclick="selectDerivationBlock('rhs_simple_halfatsq_mode_a')">${kRender('-\\frac{1}{2}at^2')}</span></div>`;
-            } else if (derivationState === 2) {
-                eqContainer.innerHTML = `
-                    <div class="side"><span class="clickable-block ${activeSelectedId === 'lhs_mult_2v2t_d' ? 'selected' : ''}" onclick="selectDerivationBlock('lhs_mult_2v2t_d')">${kRender('-2(d - v_2 t)')}</span></div>
-                    <span class="equals">=</span>
-                    <div class="side"><span class="clickable-block ${['rhs_at_sq_composite', 'rhs_at_sq'].includes(activeSelectedId) ? 'selected' : ''}" onclick="selectDerivationBlock('rhs_at_sq_composite')">${kRender('at^2')}</span></div>`;
-            } else if (derivationState === 3) {
-                eqContainer.classList.add('scaled-step');
-                eqContainer.innerHTML = `
-                    <div class="side">${kRender('\\frac{-2(d - v_2 t)}{t^2}')}</div>
-                    <span class="equals">=</span>
-                    <div class="side">${htmlA()}</div>`;
-            }
-            renderDerivationToolkit();
-        }
-
-        function getSelectedExpressionKaTeX(id) {
-            switch (id) {
-                case 'remove_half_at_sq_target':
-                    return kRender('\\frac{1}{2}at^2');
-                case 'remove_v2t_target':
-                    return kRender('v_2 t');
-                case 'denominator_constant_2':
-                    return kRender('-2');
-                case 'rhs_atsq_isolate':
-                case 'rhs_at_sq':
-                    return kRender('a');
-                case 'rhs_tsq_isolate':
-                    return kRender('t^2');
-                case 'rhs_v2t':
-                    return kRender('t');
-                default:
-                    return '';
-            }
-        }
-
-        function renderDerivationToolkit() {
-            const derivationFinalized = (targetMode === 't' && derivationState === 3) || 
-                                        (targetMode === 'v2' && derivationState === 2) || 
-                                        (targetMode === 'a' && derivationState === 3);
-            
-            if (derivationFinalized) {
-                let isolatedVarHtml = targetMode === 'v2' ? htmlV2() : (targetMode === 'a' ? htmlA() : htmlT());
-                panel.innerHTML = `
-                    <div class="action-label" style="color: #16a34a;">EQUATION SOLVED!</div>
-                    <div style="font-size: 20px; color: #16a34a; font-weight: bold; text-align: center;">
-                        Success! You've isolated ${isolatedVarHtml}.
-                    </div>`;
-                return;
-            }
-
-            let feedbackHtml = `<div id="feedback"></div>`;
-
-            if (!activeSelectedId) {
-                panel.innerHTML = `
-                    ${feedbackHtml}
-                    <div class="action-label">CLICK ON A SECTION OF THE EQUATION ABOVE TO OPERATE ON IT</div>
-                    <div class="functional-toolkit">
-                        <div class="functional-row">
-                            <div class="functional-group">
-                                <span class="group-label">Terms & Expressions</span>
-                                <button onclick="executeDerivationAction('add')">Add</button>
-                                <button onclick="executeDerivationAction('subtract')">Subtract</button>
-                            </div>
-                            <div class="functional-group">
-                                <span class="group-label">Factors & Coefficients</span>
-                                <button onclick="executeDerivationAction('multiply')">Multiply</button>
-                                <button onclick="executeDerivationAction('divide')">Divide</button>
-                            </div>
-                        </div>
-                        <div class="full-width-row">
-                            <button onclick="executeDerivationAction('root')">Take Square Root</button>
-                        </div>
-                    </div>`;
-                return;
-            }
-            
-            if (activeSelectedId === 'rhs_simple_halfatsq') {
-                panel.innerHTML = `
-                    ${feedbackHtml}
-                    <div class="action-label">WHICH PART DO YOU WANT TO CLEAR TO ISOLATE ${htmlT()}?</div>
-                    <div class="choices-container">
-                        <button onclick="handleSubComponentSelection('2')">${htmlMinus2Val()}</button>
-                        <button onclick="handleSubComponentSelection('a')">${htmlA()}</button>
-                        <button onclick="handleSubComponentSelection('t2')">${htmlTSq()}</button>
-                    </div>`;
-                return;
-            }
-
-            if (activeSelectedId === 'rhs_simple_halfatsq_mode_a') {
-                panel.innerHTML = `
-                    ${feedbackHtml}
-                    <div class="action-label">WHICH PART DO YOU WANT TO CLEAR TO ISOLATE ${htmlA()}?</div>
-                    <div class="choices-container">
-                        <button onclick="handleSubComponentSelection('2')">${htmlMinus2Val()}</button>
-                        <button onclick="handleSubComponentSelection('a')">${htmlA()}</button>
-                        <button onclick="handleSubComponentSelection('t2')">${htmlTSq()}</button>
-                    </div>`;
-                return;
-            }
-
-            if (activeSelectedId === 'rhs_atsq_composite_mode_t') {
-                panel.innerHTML = `
-                    ${feedbackHtml}
-                    <div class="action-label">WHICH PART DO YOU WANT TO CLEAR TO ISOLATE ${htmlT()}?</div>
-                    <div class="choices-container">
-                        <button onclick="handleSubComponentSelection('a')">${htmlA()}</button>
-                        <button onclick="handleSubComponentSelection('t2')">${htmlTSq()}</button>
-                    </div>`;
-                return;
-            }
-
-            if (activeSelectedId === 'rhs_at_sq_composite') {
-                panel.innerHTML = `
-                    ${feedbackHtml}
-                    <div class="action-label">WHICH PART DO YOU WANT TO CLEAR TO ISOLATE ${htmlA()}?</div>
-                    <div class="choices-container">
-                        <button onclick="handleSubComponentSelection('a')">${htmlA()}</button>
-                        <button onclick="handleSubComponentSelection('t2')">${htmlTSq()}</button>
-                    </div>`;
-                return;
-            }
-
-            if (activeSelectedId === 'rhs_v2t_composite') {
-                panel.innerHTML = `
-                    ${feedbackHtml}
-                    <div class="action-label">WHICH PART DO YOU WANT TO CLEAR TO ISOLATE ${htmlV2()}?</div>
-                    <div class="choices-container">
-                        <button onclick="handleSubComponentSelection('v2')">${htmlV2()}</button>
-                        <button onclick="handleSubComponentSelection('t')">${htmlT()}</button>
-                    </div>`;
-                return;
-            }
-
-            // Dynamically get expression to render in the header label
-            const targetExpr = getSelectedExpressionKaTeX(activeSelectedId);
-            const headerText = targetExpr ? `CHOOSE AN OPERATION TO APPLY TO ${targetExpr}` : `CHOOSE AN OPERATION`;
-
-            panel.innerHTML = `
-                ${feedbackHtml}
-                <div class="action-label">${headerText}</div>
-                <div class="functional-toolkit">
-                    <div class="functional-row">
-                        <div class="functional-group">
-                            <span class="group-label">Terms & Expressions</span>
-                            <button onclick="executeDerivationAction('add')">Add</button>
-                            <button onclick="executeDerivationAction('subtract')">Subtract</button>
-                        </div>
-                        <div class="functional-group">
-                            <span class="group-label">Factors & Coefficients</span>
-                            <button onclick="executeDerivationAction('multiply')">Multiply</button>
-                            <button onclick="executeDerivationAction('divide')">Divide</button>
-                        </div>
-                    </div>
-                    <div class="full-width-row">
-                        <button onclick="executeDerivationAction('root')">Take Square Root</button>
-                    </div>
-                </div>`;
-        }
-
-        function setTargetMode(mode) {
-            targetMode = mode;
-            derivationState = (mode === 't') ? 'v2_check' : 0;
-            clearDerivationSelection();
-            render();
-        }
-
-        function handleQuadraticResponse(v2IsZero) {
-            derivationState = v2IsZero ? 'visual_cancellation' : 'quadratic_blocked';
-            render();
-        }
-
-        function selectDerivationBlock(blockId) {
-            clearFeedbackNode();
-            if (blockId === 'd_lhs') {
-                showPedagogicalError('dont_move_this');
-                activeSelectedId = null;
             } else {
-                activeSelectedId = blockId;
+                bannerSlot.innerHTML = '';
             }
-            render();
+
+            // Render Action Toolkit
+            if (!activeSelection || !state.actions[activeSelection]) {
+                panel.innerHTML = `
+                    <div class="action-label">CHOOSE A PART OF THE EQUATION TO OPERATE ON</div>
+                    <p style="font-size: 13px; color: #64748b; text-align: center; margin: 0; line-height: 1.5;">
+                        Click on any term, factor, or denominator above to explore mathematically valid operations on both sides.
+                    </p>`;
+            } else {
+                const availableMoves = state.actions[activeSelection];
+                let movesHtml = availableMoves.map(move => `
+                    <button class="op-button" onclick="executeMove('${move.next}', '${escapeHtml(move.desc)}')">
+                        <span class="op-tag">Apply</span>
+                        <span>${move.label}</span>
+                    </button>
+                `).join('');
+
+                panel.innerHTML = `
+                    <div class="action-label">AVAILABLE ALGEBRAIC OPERATIONS</div>
+                    <div class="choices-container">
+                        ${movesHtml}
+                    </div>`;
+            }
+
+            undoBtn.disabled = historyStack.length === 0;
+            renderHistory();
         }
 
-        function handleSubComponentSelection(componentPressed) {
-            clearFeedbackNode();
-
-            if (targetMode === 't') {
-                if (derivationState === 0) {
-                    if (componentPressed === '2') {
-                        activeSelectedId = 'denominator_constant_2';
-                    } else if (componentPressed === 'a' || componentPressed === 't2') {
-                        showPedagogicalError('denominator_first');
-                        return; 
-                    }
-                } else if (derivationState === 1) {
-                    if (componentPressed === 'a') {
-                        activeSelectedId = 'rhs_atsq_isolate';
-                    } else if (componentPressed === 't2') {
-                        showPedagogicalError('dont_clear_target_t');
-                        return;
-                    }
-                }
-            }
-            else if (targetMode === 'a') {
-                if (derivationState === 1) {
-                    if (componentPressed === '2') {
-                        activeSelectedId = 'denominator_constant_2';
-                    } else if (componentPressed === 'a') {
-                        showPedagogicalError('dont_move_a');
-                        return;
-                    } else if (componentPressed === 't2') {
-                        showPedagogicalError('denominator_first');
-                        return;
-                    }
-                } else if (derivationState === 2) {
-                    if (componentPressed === 't2') {
-                        activeSelectedId = 'rhs_at_sq';
-                    } else if (componentPressed === 'a') {
-                        showPedagogicalError('dont_clear_target_a');
-                        return;
-                    }
-                }
-            }
-            else if (targetMode === 'v2') {
-                if (derivationState === 1) {
-                    if (componentPressed === 't') {
-                        activeSelectedId = 'rhs_v2t';
-                    } else if (componentPressed === 'v2') {
-                        showPedagogicalError('dont_clear_target_v2');
-                        return;
-                    }
-                }
-            }
-            render();
+        function selectItem(itemId) {
+            activeSelection = itemId;
+            renderPlayground();
         }
 
-        function executeDerivationAction(op) {
-            clearFeedbackNode();
+        function executeMove(nextStateKey, description) {
+            if (!STATES[nextStateKey]) return;
 
-            if (targetMode === 't') {
-                if (activeSelectedId === 'denominator_constant_2') {
-                    if (op === 'multiply') advanceDerivation(1);
-                    else showPedagogicalError('invalid_op');
-                } else if (activeSelectedId === 'rhs_atsq_isolate') {
-                    if (op === 'divide') advanceDerivation(2);
-                    else showPedagogicalError('invalid_op');
-                } else if (activeSelectedId === 'rhs_tsq_isolate') {
-                    if (op === 'root') advanceDerivation(3);
-                    else showPedagogicalError('invalid_op');
-                } else {
-                    showPedagogicalError('invalid_op');
-                }
+            historyStack.push({
+                stateKey: currentStateKey,
+                description: description
+            });
+
+            currentStateKey = nextStateKey;
+            activeSelection = null;
+            renderPlayground();
+        }
+
+        function undoStep() {
+            if (historyStack.length === 0) return;
+            const lastStep = historyStack.pop();
+            currentStateKey = lastStep.stateKey;
+            activeSelection = null;
+            renderPlayground();
+        }
+
+        function resetPlayground() {
+            currentStateKey = 'init';
+            activeSelection = null;
+            historyStack = [];
+            renderPlayground();
+        }
+
+        function renderHistory() {
+            if (historyStack.length === 0) {
+                historyContainer.innerHTML = `<span style="font-size: 11.5px; color: #94a3b8;">Start: d = v₂t - ½at²</span>`;
+                return;
             }
-            else if (targetMode === 'v2') {
-                if (activeSelectedId === 'remove_half_at_sq_target') {
-                    if (op === 'add') advanceDerivation(1);
-                    else showPedagogicalError('wrong_operation_add');
-                } else if (activeSelectedId === 'remove_v2t_target') {
-                    showPedagogicalError('dont_move_v2t');
-                } else if (activeSelectedId === 'rhs_v2t') {
-                    if (op === 'divide') advanceDerivation(2);
-                    else showPedagogicalError('invalid_op');
-                } else {
-                    showPedagogicalError('invalid_op');
-                }
-            }
-            else if (targetMode === 'a') {
-                if (activeSelectedId === 'remove_v2t_target') {
-                    if (op === 'subtract') advanceDerivation(1);
-                    else showPedagogicalError('wrong_operation_sub');
-                } else if (activeSelectedId === 'remove_half_at_sq_target') {
-                    showPedagogicalError('dont_move_half_at_sq');
-                } else if (activeSelectedId === 'denominator_constant_2') {
-                    if (op === 'multiply') advanceDerivation(2);
-                    else showPedagogicalError('invalid_op');
-                } else if (activeSelectedId === 'rhs_at_sq') {
-                    if (op === 'divide') advanceDerivation(3);
-                    else showPedagogicalError('invalid_op');
-                } else {
-                    showPedagogicalError('invalid_op');
-                }
-            }
+
+            historyContainer.innerHTML = historyStack.map((step, idx) => `
+                <span class="history-badge">${idx + 1}. ${step.description}</span>
+            `).join('');
         }
 
-        function advanceDerivation(nextState) {
-            derivationState = nextState;
-            activeSelectedId = null;
-            render();
+        function escapeHtml(text) {
+            return text.replace(/'/g, "\\'");
         }
 
-        function clearDerivationSelection() {
-            activeSelectedId = null;
-        }
-
-        function resetToLanding() {
-            targetMode = null;
-            derivationState = 0;
-            clearDerivationSelection();
-            render();
-        }
-
-        function clearFeedbackNode() {
-            const feedbackEl = document.getElementById('feedback');
-            if (feedbackEl) {
-                feedbackEl.innerHTML = "";
-                feedbackEl.className = "";
-            }
-        }
-
-        function showPedagogicalError(errorType) {
-            const feedbackEl = document.getElementById('feedback');
-            if (!feedbackEl) return;
-
-            if (errorType === 'denominator_first') {
-                feedbackEl.innerHTML = "Clear the denominator first.";
-            } else if (errorType === 'dont_move_a') {
-                feedbackEl.innerHTML = "We don't want to move a.";
-            } else if (errorType === 'dont_move_this') {
-                feedbackEl.innerHTML = "We don't want to move this.";
-            } else if (errorType === 'dont_move_v2t') {
-                feedbackEl.innerHTML = "We want to isolate v₂, so leave that term there and move the other term.";
-            } else if (errorType === 'dont_move_half_at_sq') {
-                feedbackEl.innerHTML = "We want to isolate a, so leave that term there and move the other term.";
-            } else if (errorType === 'wrong_operation_sub') {
-                feedbackEl.innerHTML = "Since this term is positive, you need to use subtraction to move it to the other side.";
-            } else if (errorType === 'wrong_operation_add') {
-                feedbackEl.innerHTML = "Since this term is being subtracted, you need to use addition to move it to the other side.";
-            } else if (errorType === 'invalid_op') {
-                feedbackEl.innerHTML = "That operation will not help isolate your variable.";
-            } else if (errorType === 'dont_clear_target_a') {
-                feedbackEl.innerHTML = "Don't clear a! We want to leave a isolated on this side.";
-            } else if (errorType === 'dont_clear_target_t') {
-                feedbackEl.innerHTML = "Don't clear t! We want to leave t on this side so we can isolate it next.";
-            } else if (errorType === 'dont_clear_target_v2') {
-                feedbackEl.innerHTML = "Don't clear v₂! We want to leave v₂ isolated on this side.";
-            }
-            
-            feedbackEl.classList.remove('shake');
-            void feedbackEl.offsetWidth; 
-            feedbackEl.classList.add('shake');
-        }
-
-        render();
+        renderPlayground();
     </script>
 </body>
 </html>
